@@ -314,10 +314,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libs\Library\Sfg.Util\Bahns.Util.csproj">
-      <Project>{5f88912c-e25a-499f-92bf-b68a47349b35}</Project>
-      <Name>Bahns.Util</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TennisData\TennisData.csproj">
       <Project>{b4622c23-4556-47c9-bd9c-20f5fb9bc7e8}</Project>
       <Name>TennisData</Name>

@@ -240,10 +240,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libs\Library\Sfg.Util\Bahns.Util.csproj">
-      <Project>{5F88912C-E25A-499F-92BF-B68A47349B35}</Project>
-      <Name>Bahns.Util</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TennisObjects2\TennisObjects2.csproj">
       <Project>{586C9B41-C44C-4736-BB2A-870721F06AD4}</Project>
       <Name>TennisObjects2</Name>

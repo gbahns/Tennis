@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{586C9B41-C44C-4736-BB2A-870721F06AD4}</ProjectGuid>
+    <ProjectGuid>{5F88912C-E25A-499F-92BF-B68A47349B35}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TennisObjects</RootNamespace>
-    <AssemblyName>TennisObjects</AssemblyName>
+    <RootNamespace>Bahns</RootNamespace>
+    <AssemblyName>Bahns.Util</AssemblyName>
     <SccProjectName>
     </SccProjectName>
     <SccLocalPath>
@@ -63,41 +63,56 @@
   <ItemGroup>
     <Reference Include="log4net, Version=1.2.0.30714, Culture=neutral, PublicKeyToken=b32731d11ce58905">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Libs\Assemblies\log4net\log4net.dll</HintPath>
+      <HintPath>..\..\Assemblies\log4net\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=3.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\DataAccess.cs" />
-    <Compile Include="Model\Base\BusinessBase.cs" />
-    <Compile Include="Model\Base\BusinessRules.cs" />
-    <Compile Include="Model\Info\Match.cs" />
-    <Compile Include="Model\Info\MatchScore.cs" />
-    <Compile Include="Model\Base\Log.cs" />
-    <Compile Include="Model\Edit\Match.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Model\Edit\MatchScore.cs" />
-    <Compile Include="Model\Info\MatchSummary.cs" />
-    <Compile Include="Model\Info\PlayerMatch.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Model\Edit\TennisEvent.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Model\Base\Util.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Model\Edit\Player.cs" />
-    <Compile Include="Model\Info\WinLossRecord.cs" />
+    <Compile Include="ConfigManager.cs" />
+    <Compile Include="ConfigPeeker.cs" />
+    <Compile Include="DataBind.cs" />
+    <Compile Include="DbHelper.cs" />
+    <Compile Include="Miscellaneous.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecordNotFoundException.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="SafeDataReader.cs" />
+    <Compile Include="ServiceController.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SmartDate.cs" />
+    <Compile Include="Validation\BrokenRule.cs" />
+    <Compile Include="Validation\BrokenRulesCollection.cs" />
+    <Compile Include="Validation\CommonRules.cs" />
+    <Compile Include="Validation\IRuleMethod.cs" />
+    <Compile Include="Validation\RuleArgs.cs" />
+    <Compile Include="Validation\RuleHandler.cs" />
+    <Compile Include="Validation\RuleMethod.cs" />
+    <Compile Include="Validation\RuleSeverity.cs" />
+    <Compile Include="Validation\RulesList.cs" />
+    <Compile Include="Validation\SharedValidationRules.cs" />
+    <Compile Include="Validation\Utilities.cs" />
+    <Compile Include="Validation\ValidationException.cs" />
+    <Compile Include="Validation\ValidationRules.cs" />
+    <Compile Include="Validation\ValidationRulesManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Security\" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

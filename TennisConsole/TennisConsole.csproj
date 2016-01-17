@@ -63,7 +63,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libs\Library\Sfg.Util\Bahns.Util.csproj">
+    <ProjectReference Include="..\Bahns.Util\Bahns.Util.csproj">
       <Project>{5f88912c-e25a-499f-92bf-b68a47349b35}</Project>
       <Name>Bahns.Util</Name>
     </ProjectReference>
