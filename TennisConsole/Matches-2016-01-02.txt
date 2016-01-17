@@ -1,0 +1,33 @@
+﻿L,Chris Mark,64 64,12/28 7am
+W,Garth,75 62,12/30 6am
+L,Kalonji,76(51) 32(52),12/29 8am
+L,Scott,63 54(86),12/31 8am
+W,Gene,67(27) 63 64,12/23 6am
+W,Garth,64 75,12/21 6:30am
+W,Mark Rothfuss (Eastern),Interclub Playoffs 64 53 12/13 12:00pm
+L,Steve,64 63,12/11 6am
+L,Scott,62 61,12/15 8am
+W,Gene,64 63,12/9 6am
+L,Scott,76(52) 36 76(53),12/7 6am
+L,Gene,63 36 63,12/4 6am
+W,Pottner,63 46 75,6am 11/25
+L,Scott,63 62,11/23 7:30am
+L,mihir dalal Harper's,64 26,20 11/22 2pm
+L,Steve,63 76(52),11/18 6am
+W,Garth,61 61,11/16 6am
+L,Scott,11/13 6am 64 63,
+D,Kalonji,62 55,out of time 11/9 6am
+L,Chris Mark,61 76(54),11/11 6am
+W,Marius Truta (eastern),61 76(53),11/8 2pm
+L,Scott,63 36 75,11/4 6am
+W,Garth,64 62,11/2 6am
+L,Steve,64 65(53),10/30 6am
+W,Tuck (QC),26 51 10(52),10/25 6am
+L,Gene,61 64,10/28 6am
+L,Steve,64 34 default,10/23 6am
+L,Steve Moore,46 42 10(52),11:30am 10/18
+W,Gene,64 24 10(97),6am 10/16
+W,Garth,61 61,6am 10/14
+W,Garth,64 75,6am 10/12
+L,Kalonji,76() 10(),9/28 6am
+W,Chris,75 54(53),6am 10/7

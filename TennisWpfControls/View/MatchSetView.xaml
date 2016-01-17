@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="TennisWpfControls.View.MatchSetView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="http://schemas.microsoft.com/wpf/2008/toolkit">
+    
+    <Border Visibility="{Binding Path=SetVisibility}">
+        <StackPanel >
+            <StackPanel Orientation="Horizontal" Margin="4,4,4,0">
+                <TextBlock Text="Set " VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Path=SetNumber}" VerticalAlignment="Center" Padding="0,0,5,0"/>
+                <TextBox Width="20" Text="{Binding Path=WGames, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text=" - " VerticalAlignment="Center"/>
+                <TextBox Width="20" Text="{Binding Path=LGames, UpdateSourceTrigger=PropertyChanged}"/>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding Path=TiebreakVisibility}">
+                    <TextBlock Text="  ( " VerticalAlignment="Center" FontSize="16"/>
+                    <TextBox Width="20" Text="{Binding Path=WTiebreak, UpdateSourceTrigger=PropertyChanged}" AutoWordSelection="True" />
+                    <TextBlock Text=" - " VerticalAlignment="Center"/>
+                    <TextBox Width="20" Text="{Binding Path=LTiebreak, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text=" )" VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

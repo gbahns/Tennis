@@ -1,0 +1,71 @@
+﻿@model TennisObjects.Match
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Match</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.EventID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EventID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.WinnerID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.WinnerID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LoserID)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LoserID)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ResultString)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ResultString)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsValid)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsValid)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsDirty)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsDirty)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsNew)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsNew)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IsSavable)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsSavable)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

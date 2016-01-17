@@ -1,0 +1,158 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50215</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A265634C-7DD6-411F-977B-08CBDBCE9358}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <StartupObject>
+    </StartupObject>
+    <RootNamespace>Tennis.Objects</RootNamespace>
+    <AssemblyName>Tennis.Objects</AssemblyName>
+    <MyType>Windows</MyType>
+    <OptionStrict>On</OptionStrict>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <IncrementalBuild>true</IncrementalBuild>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>Tennis.Objects.xml</DocumentationFile>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <IncrementalBuild>false</IncrementalBuild>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>TennisObjects.xml</DocumentationFile>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.0.30714, Culture=neutral, PublicKeyToken=b32731d11ce58905">
+      <HintPath>..\..\..\Libs\Assemblies\log4net\log4net.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="CSLA" />
+    <Import Include="Csla.Data" />
+    <Import Include="Library" />
+    <Import Include="log4net" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="Tennis.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessRules.vb" />
+    <Compile Include="Classification.vb" />
+    <Compile Include="ClassificationList.vb" />
+    <Compile Include="EventList.vb" />
+    <Compile Include="Match.vb" />
+    <Compile Include="MatchScore.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="My Project\MyApplication.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MyApplication.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyResources.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MyResources.resx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="My Project\MySettings.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MySettings.settings</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Player.vb" />
+    <Compile Include="PlayerEventSummary.vb" />
+    <Compile Include="PlayerEventSummaryList.vb" />
+    <Compile Include="PlayerMatch.vb" />
+    <Compile Include="PlayerMatchList.vb" />
+    <Compile Include="PlayerOpponentSummary.vb" />
+    <Compile Include="PlayerOpponentSummaryList.vb" />
+    <Compile Include="PlayerList.vb" />
+    <Compile Include="TennisEvent.vb" />
+    <Compile Include="UserIdentity.vb" />
+    <Compile Include="UserPrincipal.vb" />
+    <Compile Include="Util.vb" />
+    <Compile Include="WinLossRecord.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\MyResources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>MyResources.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\MyApplication.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>MyApplication.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\MySettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>MySettings.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="My Project\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\CSLA\CSLA.Core.Bindablebase\CSLA.Core.Bindablebase.csproj">
+      <Project>{C2392355-12A9-4197-A1D3-603C390B1E62}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Name>CSLA.Core.Bindablebase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libs\CSLA\CSLA\CSLA.vbproj">
+      <Project>{1B9A38BB-461A-47A4-AD72-099C694138A0}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Name>CSLA</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libs\Library\Exception\Exception.vbproj">
+      <Project>{0B9B9B24-9E3B-407C-8FC3-F1335D36C51F}</Project>
+      <Name>Exception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libs\Library\Rules\Rules.vbproj">
+      <Project>{927F1210-F3BB-43D0-B1DA-C3F9F676A632}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Name>Rules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libs\Library\Utilities\Utilities.vbproj">
+      <Project>{54D0DBCE-B028-4D3E-B74F-FFC50E2568EE}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+      <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.vbproj">
+      <Project>{CB9FBD17-4BF4-4090-A787-BCAC05EEBAD2}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.Targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,3 @@
+﻿ALTER TABLE [dbo].[Players] ADD CONSTRAINT [aaaaaPlayers2_PK] PRIMARY KEY NONCLUSTERED  ([ID]) ON [PRIMARY]
+
+

@@ -1,0 +1,8 @@
+Experimenting with different looks.
+
+To try a different one, modify tennis.master to refer to a different css file, or rename
+the one you want to tennis.css.
+
+The original is tennis-sidenav.css.  This one has the navigation on the side.
+
+New experiment is with top menu.  File is tennis.css for now.

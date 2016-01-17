@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="menu.xslt"?>
+<xml>
+	<menu text="Home" url="Home.aspx">
+		<menu text="My Events" url="PlayerEventSummary.aspx">
+			<menu text="My Leagues" url="MyLeagues.aspx"></menu>
+			<menu text="My Tourneys" url="MyTournaments.aspx"></menu>
+			<menu text="My Others" url="MyOtherMatches.aspx"></menu>
+		</menu>
+		<menu text="My Opponents" url="PlayerOpponentSummary.aspx"></menu>
+		<menu text="My Matches" url="MatchList.aspx"></menu>
+	</menu>
+  <menu text="Matches" url="PlayerMatchList.aspx">
+    <menu text="Add Match" url="Match.aspx"></menu>
+  </menu>
+  <menu text="Players" url="PlayerList.aspx">
+    <menu text="Add Player" url="Player.aspx"></menu>
+  </menu>
+  <menu text="Teams" url="TeamList.aspx">
+		<menu text="Add Team" url="Team.aspx"></menu>
+	</menu>
+	<!--
+	<menu text="Matches" url="MatchList.aspx">
+		<menu text="Add Match" url="Match.aspx"/>
+	</menu>
+	-->
+	<menu text="Events" url="EventList.aspx">
+		<menu text="Add Event" url="Event.aspx"/>
+	</menu>
+	<menu text="Classification" url="ClassificationList.aspx">
+		<menu text="Add Classification" url="Classification.aspx"/>
+	</menu>
+	<menu text="About" url="About.aspx"/>
+	<menu text="Contact" url="mailto:gregbahns.com"/>
+</xml>

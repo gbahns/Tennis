@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Name>"DatabaseProject"</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9c7d122d-5868-4b4b-a61d-b74d75c08bdc}</ProjectGuid>
+    <ShowWizard>False</ShowWizard>
+    <OutputType>Database</OutputType>
+    <DBProduct>SQL Server 2000</DBProduct>
+    <RootPath>
+    </RootPath>
+    <ArithAbort>True</ArithAbort>
+    <NumericRoundAbort>False</NumericRoundAbort>
+    <AnsiNulls>True</AnsiNulls>
+    <ConcatNullYieldsNull>True</ConcatNullYieldsNull>
+    <AnsiPadding>True</AnsiPadding>
+    <AnsiWarnings>True</AnsiWarnings>
+    <QuotedIdentifier>True</QuotedIdentifier>
+    <DefaultSchemaForUnqualifiedObjects>dbo</DefaultSchemaForUnqualifiedObjects>
+    <EnableFullTextSearch>False</EnableFullTextSearch>
+    <AutoUpdateStatisticsAsynchronously>True</AutoUpdateStatisticsAsynchronously>
+    <AutoUpdateStatistics>True</AutoUpdateStatistics>
+    <AutoShrink>False</AutoShrink>
+    <AutoCreateStatistics>True</AutoCreateStatistics>
+    <AutoClose>False</AutoClose>
+    <DefaultCursor>LOCAL</DefaultCursor>
+    <CloseCursorOnCommitEnabled>False</CloseCursorOnCommitEnabled>
+    <DatabaseState>ONLINE</DatabaseState>
+    <DatabaseAccess>MULTI_USER</DatabaseAccess>
+    <UpdateOptions>READ_WRITE</UpdateOptions>
+    <Parameterization>SIMPLE</Parameterization>
+    <Recovery>FULL</Recovery>
+    <PageVerify>NONE</PageVerify>
+    <TornPageDetection>False</TornPageDetection>
+    <AllowSnapshotIsolation>False</AllowSnapshotIsolation>
+    <ReadCommittedSnapshot>False</ReadCommittedSnapshot>
+    <AnsiNullDefault>True</AnsiNullDefault>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFileStructure>BySchemaType</DefaultFileStructure>
+    <DatabaseChaining>False</DatabaseChaining>
+    <EnableServiceBroker>False</EnableServiceBroker>
+    <RecursiveTriggersEnabled>False</RecursiveTriggersEnabled>
+    <Trustworthy>False</Trustworthy>
+    <IncludeSchemaNameInFilename>True</IncludeSchemaNameInFilename>
+    <DoNotUseAlterAssemblyStatementsToUpdateCLRTypes>False</DoNotUseAlterAssemblyStatementsToUpdateCLRTypes>
+    <ProjectVersion>2</ProjectVersion>
+    <OutputPath>.\sql\</OutputPath>
+    <DefaultSchema>dbo</DefaultSchema>
+    <BuildVersion>9.0.30729.1</BuildVersion>
+    <RootNamespace>TennisDB</RootNamespace>
+    <SccProjectName>"$/Apps/Tennis", ZOAAAAAA</SccProjectName>
+    <SccProvider>MSSCCI:Microsoft Visual SourceSafe</SccProvider>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccLocalPath>..</SccLocalPath>
+    <PreviousProjectVersion>2</PreviousProjectVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Default' ">
+    <OutputPath>.\sql\</OutputPath>
+    <TargetConnectionString>
+    </TargetConnectionString>
+    <TargetDatabase>
+    </TargetDatabase>
+    <DeploymentCollationPreference>ChangeSourceDBCollation</DeploymentCollationPreference>
+    <AlwaysCreateNewDatabase>false</AlwaysCreateNewDatabase>
+    <GenerateDropsIfNotInProject>False</GenerateDropsIfNotInProject>
+    <BlockIncrementalDeploymentIfDataLoss>True</BlockIncrementalDeploymentIfDataLoss>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <PerformDatabaseBackup>False</PerformDatabaseBackup>
+    <SingleUserMode>False</SingleUserMode>
+    <UseFuzzyMatchForColumns>False</UseFuzzyMatchForColumns>
+    <SuppressWarnings>
+    </SuppressWarnings>
+    <AutoGenerateBuildScriptName>False</AutoGenerateBuildScriptName>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+  </PropertyGroup>
+  <!--Import the settings-->
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\TeamData\Microsoft.VisualStudio.TeamSystem.Data.Tasks.targets" />
+  <ItemGroup>
+    <Folder Include="Schema Objects" />
+    <Folder Include="Schema Objects\Functions" />
+    <Folder Include="Schema Objects\Security" />
+    <Folder Include="Schema Objects\Security\Roles" />
+    <Folder Include="Schema Objects\Security\Roles\Application Roles" />
+    <Folder Include="Schema Objects\Security\Roles\Database Roles" />
+    <Folder Include="Schema Objects\Security\Users" />
+    <Folder Include="Schema Objects\Storage" />
+    <Folder Include="Schema Objects\Storage\File Groups" />
+    <Folder Include="Schema Objects\Storage\Full Text Catalogs" />
+    <Folder Include="Schema Objects\Stored Procedures" />
+    <Folder Include="Schema Objects\Tables" />
+    <Folder Include="Schema Objects\Tables\Constraints" />
+    <Folder Include="Schema Objects\Tables\Indexes" />
+    <Folder Include="Schema Objects\Tables\Keys" />
+    <Folder Include="Schema Objects\Tables\Statistics" />
+    <Folder Include="Schema Objects\Tables\Triggers" />
+    <Folder Include="Schema Objects\Types" />
+    <Folder Include="Schema Objects\Types\User-defined Data Types" />
+    <Folder Include="Schema Objects\Views" />
+    <Folder Include="Schema Objects\Views\Indexes" />
+    <Folder Include="Schema Objects\Views\Statistics" />
+    <Folder Include="Schema Objects\Views\Triggers" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\Pre-Deployment" />
+    <Folder Include="Scripts\Post-Deployment" />
+    <Folder Include="Data Generation Plans" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Pre-Deployment\Script.PreDeployment.sql">
+      <SubType>Code</SubType>
+    </PreDeploy>
+    <PostDeploy Include="Scripts\Post-Deployment\Script.PostDeployment.sql">
+      <SubType>Code</SubType>
+    </PostDeploy>
+    <NotInBuild Include="Scripts\Post-Deployment\DatabaseObjectOptions.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="Scripts\Post-Deployment\Permissions.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="Scripts\Post-Deployment\RoleMemberships.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="Scripts\Post-Deployment\RulesAndDefaults.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="Scripts\Post-Deployment\Storage.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="Scripts\Pre-Deployment\CustomErrors.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="Scripts\Pre-Deployment\LinkedServers.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="Scripts\Pre-Deployment\Logins.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+    <NotInBuild Include="Scripts\ScriptsIgnoredOnImport.sql">
+      <SubType>NotInBuild</SubType>
+    </NotInBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Schema Objects\Functions\dbo.fn_get_player_history.function.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Security\Roles\Database Roles\application.role.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_changepassword.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_confirm_new_user.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_create_user.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_delete_classification.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_delete_event.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_delete_match.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_delete_player.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_business_rules.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_classificationlist.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_event.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_eventlist.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_match.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_matchlist.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_matchlist_personal.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_match_summary_events.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_match_summary_opponents.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_password.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_player.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_playerlist.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_player_summary_events.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_player_summary_opponents.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_get_user.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_login.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_save_classification.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_save_event.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_save_match.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Stored Procedures\dbo.csla_save_player.proc.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Classifications.DF_Classifications_USTAEquivalent.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Events.DF_Events_Type.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_Defaulted.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_LoserSet1.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_LoserSet2.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_LoserSet3.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_LoserSet4.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_LoserSet5.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_WinnerSet1.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_WinnerSet2.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_WinnerSet3.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_WinnerSet4.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Matches.DF_Matches_WinnerSet5.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Constraints\dbo.Users.DF_Users_approved.defconst.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.BusinessRules.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.Classifications.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.Events.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.Locations.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.LocationSurfaces.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.Matches.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.Players.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.PlayerTeams.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.Roles.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.Surfaces.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.Teams.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.UserRoles.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\dbo.Users.table.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Indexes\dbo.Events.ID.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Indexes\dbo.Events.Name.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Indexes\dbo.Players.ID.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Indexes\dbo.Players.Name.index.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Classifications.PK_Classifications.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Events.aaaaaEvents2_PK.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Matches.FK_NewMatchesLoser_Players.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Matches.FK_NewMatchesWinner_Players.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Matches.FK_NewMatches_Events.fkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Matches.PK_NewMatches.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Players.aaaaaPlayers2_PK.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Roles.PK_Roles.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Teams.PK_Teams.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Users.PK_Users.pkey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Tables\Keys\dbo.Users.UK_Users_uid.ukey.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Views\dbo.EventList.view.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Views\dbo.EventListAll.view.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Views\dbo.MatchList.view.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Views\dbo.PlayerList.view.sql">
+      <SubType>Code</SubType>
+    </Build>
+    <Build Include="Schema Objects\Views\dbo.UserList.view.sql">
+      <SubType>Code</SubType>
+    </Build>
+  </ItemGroup>
+  <PropertyGroup>
+    <FilegroupSetVariables>
+      <Variable Name="PrimaryFileName" Value="$(TargetDatabase)_mdf" />
+      <Variable Name="PrimaryLogFileName" Value="$(TargetDatabase)_ldf" />
+      <Variable Name="PrimaryFilePhysicalName" Value="$(DefaultDataPath)$(TargetDatabase).mdf" />
+      <Variable Name="PrimaryLogFilePhysicalName" Value="$(DefaultDataPath)$(TargetDatabase)_log.ldf" />
+    </FilegroupSetVariables>
+  </PropertyGroup>
+</Project>

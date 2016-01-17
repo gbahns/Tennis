@@ -1,0 +1,53 @@
+--------
+* done *
+--------
+when loading match, if event is not in "current" list, add that event to the list, or
+simply switch to the full list
+
+prompt before deleting event
+
+when event info changes, upcate event list (i.e. dropdowns)
+
+taller event dropdown on match dialog
+
+when the user types in an event name and selects Add Event, initialize the new event with 
+the name they typed
+
+
+--------
+* todo *
+--------
+fix problems with updating winner & loser combos when players are added & deleted
+
+add team/club field to players; display on the match form only when a team event has been selected
+
+make it so when you change the event dropdown filter it retains the selected item
+
+add ability to add edit & delete players
+
+add ability to add edit & delete classifications
+
+use keystrokes for combobox things, linke Ins to add, Del to delete, F2 to edit?
+
+when match info changes, update match list
+
+when new match added, updated match list
+
+provide ability to delete matches; should do soft delete
+
+refresh error provider immediately when screen loads, and whenever broken rules collection is updated.
+currently it only updates when you leave a control.  it needs to update whenever anything changes.
+and it needs to update for all controls, because one control may become invalid when a different
+control changes.
+
+shortcut keys for context menus aren't working
+
+combo box base class to intialize auto completion, set the selected item accordingly on validating, etc.
+
+on attempt to delete event which has match assigned to it, provide more informative error message
+
+disable delete/edit event commands when blank event is selected
+
+disable delete event command when event that is in use is selected
+
+add filters to summary screens

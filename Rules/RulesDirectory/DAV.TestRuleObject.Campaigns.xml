@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<DAV.TestRuleObject.Campaigns>
+    <Property Name="ITFinishDate">
+        <Definition>
+            <ToolTip>Please enter ITFinishDate</ToolTip>
+            <Required>TRUE</Required>
+            <MaxLength></MaxLength>
+            <MinLength></MinLength>
+            <MaxValue></MaxValue>
+            <MinValue></MinValue>
+            <DefaultText></DefaultText>
+            <Mask>00/00/0000</Mask>
+            <RegularExpressionType>DateFormat</RegularExpressionType>
+        </Definition>
+        <Rules>
+            <Rule Name="ITFinishDate" Description="ITFinishDate less than WallaceScheduledDate" Expression="Me.ITFinishDate LessThan Me.WallaceScheduledStartDate" ErrorMessage="ITFinish Date has to be less than WallaceScheduledStartDate"></Rule>
+        </Rules>
+    </Property>
+    <Property Name="WallaceScheduledStartDate">
+        <Definition>
+            <ToolTip>Please enter WallaceScheduledStartDate</ToolTip>
+            <Required>TRUE</Required>
+            <MaxLength></MaxLength>
+            <MinLength></MinLength>
+            <MaxValue></MaxValue>
+            <MinValue></MinValue>
+            <DefaultText></DefaultText>
+            <Mask>00/00/0000</Mask>
+            <RegularExpressionType>DateFormat</RegularExpressionType>
+        </Definition>
+        <Rules>
+            <Rule Name="WallaceScheduledStartDate" Description="ITFinishDate less than WallaceScheduledDate" Expression="Me.ITFinishDate LessThan Me.WallaceScheduledStartDate" ErrorMessage="ITFinish Date has to be less than WallaceScheduledStartDate"></Rule>
+        </Rules>
+    </Property>
+</DAV.TestRuleObject.Campaigns>

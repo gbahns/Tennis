@@ -1,0 +1,148 @@
+﻿/* DatePicker root style.  This class is assigned to the HTML table that contains the calendar.
+	Styles applied here will this apply the surrounding table and will cascade down to the
+	navigation header, day header, and the days themselves, unless overridden at
+	those lower levels. */
+.DatePicker
+{
+	/*background-color: #ecf5ff;
+	background-color: #d8f0ff;*/
+	vertical-align: middle;
+	/*width: 200px;
+	height: 160px;*/
+	border-width: 2px;
+	border-style: solid;
+	border-top-color: #dddddd;
+	border-left-color: #cccccc;
+	border-bottom-color: #555555;
+	border-right-color: #444444;
+	background-color: White;
+	color: Black;
+	
+	margin: 0px;
+	padding: 0px;
+	border-spacing: 0px;
+	text-align: center;
+}
+
+.DatePicker thead table  
+{
+	margin: 0px;
+	padding: 0px;
+	border-spacing: 0px;
+}
+
+.DatePicker thead tr  
+{
+	text-indent: 0px;
+}
+
+/* DatePicker navigation header style.  The navigation header is contained in a
+	thead element.  It contains controls to jump to different months and years.  */
+.DatePicker thead tr td
+{
+	color: Black;
+	font-weight: bold;
+	font-family: Arial;
+	background-color: #dddddd;
+	vertical-align: middle;
+	text-align: left;
+	padding: 2px;
+	border-style: none;
+}
+
+.DatePicker select
+{
+	font-size: 7pt;
+}
+
+.DatePicker table
+{
+	border-width: 0px;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+	border-spacing: 0px;
+}
+
+.DatePicker thead td .NavButton
+{
+	text-align: center;
+	cursor: hand;
+	color: #777777;
+	/*font-family: ravie;
+	font-family: Arial Black;*/
+	font-size: 10pt;
+}
+
+.DatePicker thead td .NavButton:hover
+{
+	color: #0000a0;
+	/*background-color: Highlight;*/
+}
+
+.DatePicker thead td .MonthSelector
+{
+}
+
+.DatePicker thead td .YearSelector
+{
+}
+
+/* DatePicker day header style. */
+.DatePicker .Body th
+{
+	background-color: #aaaaaa;
+	vertical-align: middle;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+/* DatePicker regular day style. */
+/* based on <a> tag because IE6 can't handle td:hover */
+.DatePicker .Body a
+{
+	color: Black;
+	text-decoration: none;
+	border-width: 1px;
+	border-style: solid;
+	border-color: White;
+	cursor: hand;
+}
+
+.DatePicker .Body a:hover
+{
+	color: White;
+	background-color: Highlight;
+	border-color: Black;
+}
+
+.DatePicker .Body .Selected a
+{
+	color: White;
+	background-color: Highlight;
+	border-color: Black;
+}
+
+.DatePicker .Body .Today a
+{
+	/*color: White;*/
+	background-color: #dddddd;
+	border-color: Black;
+}
+
+.DatePicker .Body .Today a:hover
+{
+	color: White;
+	background-color: Highlight;
+}
+
+.DatePicker .Body .OtherMonth a
+{
+	color: Gray;
+}
+
+.DatePicker .Body .OtherMonth a:hover
+{
+	color: White;
+	background-color: Highlight;
+}

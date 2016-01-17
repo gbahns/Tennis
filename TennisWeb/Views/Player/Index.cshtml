@@ -1,0 +1,93 @@
+﻿@model IEnumerable<TennisObjects.Info.MatchSummary>
+
+@{
+    ViewBag.Title = "Players";
+}
+
+<h2>@ViewBag.Title</h2> 
+@Html.ActionLink("New Player", "Create")
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MatchesPlayed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MatchesWon)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MatchesLost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MatchesPct)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SetsWon)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SetsLost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SetsPct)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GamesWon)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GamesLost)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GamesPct)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MatchesPlayed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MatchesWon)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MatchesLost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MatchesPct)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SetsWon)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SetsLost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SetsPct)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GamesWon)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GamesLost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GamesPct)
+        </td>
+        <td>
+            @Html.ActionLink("Add", "Create", "Match", new { playerId=item.ID }, null)
+            @Html.ActionLink("Matches", "MatchList", new { id=item.ID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID })
+@*            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })*@
+        </td>
+    </tr>
+}
+
+</table>

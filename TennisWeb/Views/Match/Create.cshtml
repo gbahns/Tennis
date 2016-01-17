@@ -1,0 +1,51 @@
+﻿@model TennisObjects.Match
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Match</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EventID)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EventID)
+            @Html.ValidationMessageFor(model => model.EventID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.WinnerID)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.WinnerID)
+            @Html.ValidationMessageFor(model => model.WinnerID)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LoserID)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LoserID)
+            @Html.ValidationMessageFor(model => model.LoserID)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

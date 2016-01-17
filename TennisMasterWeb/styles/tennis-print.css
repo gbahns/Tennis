@@ -1,0 +1,166 @@
+/*****************************
+* header and top-level stuff *
+*****************************/
+body {
+	padding:0;
+	margin:0;
+	/* for printing, hide the background gif*/
+	}
+
+/* for printing, hide all header and navigation info*/
+#Header {display: none;} 
+#logo {display: none;}
+#Navigation {display: none;}
+#webmaster {display: none;}
+
+
+/********************
+* main content area *
+********************/
+#content {
+	/* for printing, eliminate all content padding */
+	padding: 0;
+	}
+
+#content h1 {
+	font-family : "Trebuchet MS", Georgia, Times, serif;
+	font-size : 120%;
+	font-weight : bold;
+	color : #00A;
+	background-color : transparent;
+	}                     
+
+#content h2 {
+	font-family: "Trebuchet MS", Georgia, Times, serif;
+	font-size: 100%;
+	font-weight: bold;
+	color: #000000;
+	background-color : transparent;
+	}
+
+#content p {
+	font-family : "Trebuchet MS", Georgia, Times,serif;
+	font-size : 80%;
+	font-weight : normal;
+	color : #000;
+	background-color : transparent;
+	line-height : 140%;
+	}
+	
+#content #TableOfContents 
+{
+	font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 80%;
+	font-weight : normal;
+	color : #070;
+	/*background-color : transparent;
+	line-height : 140%;*/
+}
+
+#script {
+    position : absolute;
+    top : 12px;
+    right : 0;
+    text-align : right; /*Mild hack for Netscape 4*/
+    /* note: the hack only works on load/re-load; it does not work on re-size */
+	}
+
+
+/*********
+* Resume *
+*********/
+#Resume {
+	/* for printed resume, use a black serif font */
+    padding: 0px; /* not overriding .Content for some reason */
+    font-family : Times New Roman, Book Antiqua, Serif Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-align: right;
+	}
+#Resume table {
+	font-size:10pt;
+	color: black;
+	}
+#Resume p {
+	font-size:10pt;
+	color: black;
+    font-family : Times New Roman, Book Antiqua, Serif Verdana, Geneva, Arial, Helvetica, sans-serif;
+	}
+#Resume #Name {
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-weight:bold;
+	font-size:140%;
+	}
+#Resume #Address td {
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-align:center;
+	font-weight:bold;
+	font-size:115%;
+	padding-bottom: 10px;
+	}
+#Resume #Address td A {
+	text-decoration:none;
+	color:black;
+	}
+#Resume th {
+	vertical-align:top;
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 110%;
+	padding:4px;
+	margin:0;
+	border-top:2px solid black;
+	}
+#Resume td {
+	padding:0;
+	margin:0;
+	padding-left:10px;
+	border-top:2px solid black;
+	padding:4px;
+	}
+#Resume .Header td {
+	border-width: 0px;
+	padding:0px;
+	}
+#Resume td td {
+	border-width: 0px;
+	padding:0px;
+	}
+
+/* major employer/industry descriptions in the left column */
+#Resume .Job {
+	vertical-align:top;
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 100%;
+	border-top:2px solid black;
+	padding:4px;
+	}
+
+#Resume .Title {
+	font-weight:bold;
+	margin:0;
+	}
+#Resume UL {
+	margin:0 0 0 0;
+	padding-left: 20px; /* works for both IE and NS7; margin-left doesn't */
+	list-style-type: disc;
+	}
+#Resume UL UL {
+	list-style-type: disc;
+	}
+/*
+this comment is here to describe how to add images as bullets in the future.
+list-style
+
+list-style-type
+disc Default. Solid circles. 
+circle Outlined circles. 
+square Solid squares. 
+none No marker is shown. 
+
+list-style-position:
+	outside Default. Marker is placed outside the text, and any wrapping text is not aligned under the marker. 
+	inside Marker is placed inside the text, and any wrapping text is aligned under the marker. 
+
+list-style-image:
+	none Default. No image is specified. 
+	url(sURL) Location of the image, where sURL is an absolute or relative URL. 
+*/

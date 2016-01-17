@@ -1,0 +1,17 @@
+﻿@model DateTime
+
+@{
+    ViewBag.Title = "CacheTest";
+}
+
+<h2>CacheTest</h2>
+
+<div>
+	This is the CacheTest page of the Home controller, rendering at @Model.ToLongTimeString().
+</div>
+<div>
+	@Html.Action("CurrentTime")
+</div>
+<div>
+	@ViewBag.Message
+</div>

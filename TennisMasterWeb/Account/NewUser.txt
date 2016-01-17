@@ -1,0 +1,5 @@
+Your new account has been created.  Please click the following link or paste it into your browser's address bar to confirm your registration:
+
+username: <%UserName%>
+
+http://localhost/TennisMasterWeb/Account/ConfirmNewAccount.aspx?ref=<%id%>&uid=<%UserName%>&email=<%email%>

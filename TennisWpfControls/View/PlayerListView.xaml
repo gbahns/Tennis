@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="TennisWpfControls.View.PlayerListView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:util="clr-namespace:Wpf.Util">
+
+    <Border CornerRadius="6" Padding="6" Margin="5" BorderThickness="2" BorderBrush="Black" Background="wheat">
+        <StackPanel >
+            <TextBlock Text="{Binding Path=DisplayName}" Background="Navy" Foreground="White" Padding="2" FontWeight="bold"/>
+
+            <ListView MinWidth="200" MinHeight="100" ItemsSource="{Binding Path=List}" util:GridViewSort.AutoSort="True">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="true">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=ID}" Header="ID" Width="auto" util:GridViewSort.PropertyName="ID"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=FirstName}" Header="First Name" Width="auto" util:GridViewSort.PropertyName="FirstName"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=LastName}" Header="Last Name" Width="auto" util:GridViewSort.PropertyName="LastName"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,96 @@
+<%@ master language="C#" autoeventwireup="true" inherits="tennis, App_Web_oxees8qa" %>
+
+<% log.Info("Page start"); %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>
+		<asp:ContentPlaceHolder id="title" runat="server">
+		</asp:ContentPlaceHolder>
+	</title>
+	<link href="tennis.css" type="text/css" rel="stylesheet" /> 
+</head>
+<body>
+
+	<% log.Info("page body"); %>
+	
+	<div id="logo" class="header">
+		<a href="Home.aspx"><img src="images/TennisBall2.bmp" alt="Tennis Master" /></a>
+		<span id="Title"><a href="Home.aspx">Tennis Master</a></span>
+	</div>
+	
+	<!-- 
+	<div id="logout" class="header">
+		<a href="login.aspx?ReturnUrl=Home.aspx">logout</a>
+	</div>
+
+	<div id="webmaster" class="header">
+		comments and suggestions<br/>
+		to <a href="mailto:webmaster@bahns.com">webmaster@bahns.com</a>
+	</div>
+	
+	<div id="navigation"/>
+	
+	-->
+	
+	<div id="banner"/>
+	<!--
+			DynamicHoverStyle-CssClass="menu"  DynamicMenuItemStyle-CssClass="menu" DynamicMenuStyle-CssClass="menu" DynamicSelectedStyle-CssClass="menu"
+			StaticHoverStyle-CssClass="menu"  StaticMenuStyle-CssClass="menu" StaticSelectedStyle-CssClass="menu"
+			StaticTopSeparatorImageUrl="images/MenuSeparator.gif" DynamicBottomSeparatorImageUrl="images\MenuSeparator.gif"
+			 DynamicTopSeparatorImageUrl="images/MenuSeparator.gif" StaticBottomSeparatorImageUrl="images/MenuSeparator.gif"
+	-->
+	
+	<form id="form" runat="server">
+	<div id="menu">
+		<asp:Menu ID="MainMenu" runat="server" Orientation="Horizontal" StaticEnableDefaultPopOutImage="False" CssClass="menu" 
+			StaticMenuStyle-CssClass="StaticMenu"			DynamicMenuStyle-CssClass="DyanmicMenu"
+			StaticMenuItemStyle-CssClass="StaticMenuItem"	DynamicMenuItemStyle-CssClass="DyanmicMenuItem"
+			StaticHoverStyle-CssClass="StaticMenuHover"		DynamicHoverStyle-CssClass="DyanmicMenuHover"
+			StaticSelectedStyle-CssClass="StaticSelected"	DynamicSelectedStyle-CssClass="DyanmicSelected"
+			>
+			<Items>
+				<asp:MenuItem Text="Home" NavigateUrl="~/Default.aspx" Selectable="true" />
+				<asp:MenuItem Text="Matches" Value="Matches" NavigateUrl="~/ViewMatchList.aspx">
+					<asp:MenuItem Text="Add Match" Value="Add" NavigateUrl="~/Match.aspx"></asp:MenuItem>
+					<asp:MenuItem Text="View Matches" Value="View"></asp:MenuItem>
+				</asp:MenuItem>
+				<asp:MenuItem Text="Results" />
+				<asp:MenuItem Text="Players" Value="Players" NavigateUrl="ViewPlayerList.aspx">
+					<asp:MenuItem Text="Add" Value="Add" NavigateUrl="EditPlayer.aspx"></asp:MenuItem>
+					<asp:MenuItem Text="View" Value="View"></asp:MenuItem>
+				</asp:MenuItem>
+				<asp:MenuItem Text="Events" Value="Events">
+					<asp:MenuItem Text="Add" Value="Add"></asp:MenuItem>
+					<asp:MenuItem Text="View" Value="View"></asp:MenuItem>
+				</asp:MenuItem>
+				<asp:MenuItem Text="Classifications" Value="Classifications">
+					<asp:MenuItem Text="Add" Value="Add"></asp:MenuItem>
+					<asp:MenuItem Text="View" Value="View"></asp:MenuItem>
+				</asp:MenuItem>
+				<asp:MenuItem Text="Admin" />
+			</Items>
+		</asp:Menu>
+	</div>
+	
+    <div id="content">
+        <asp:contentplaceholder id="maincontent" runat="server">
+This is the master content.<br />
+		If you see this text then I guess the development web server is working.<br />
+		<br />
+		Here we could provide some links to test the other pages.<br />
+		<br />
+		<asp:MultiView ID="MultiView1" runat="server">
+			<asp:View ID="View1" runat="server">
+				View 1</asp:View>
+			<asp:View ID="View2" runat="server">
+				View 2</asp:View>
+		</asp:MultiView>        </asp:contentplaceholder>
+    </div>
+    </form>
+	<% log.Info("page body complete"); %>
+</body>
+</html>
+<% log.Info("Page end"); %>

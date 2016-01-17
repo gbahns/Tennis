@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="TennisWpfControls.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    >
+
+    <UserControl.Resources>
+        <ResourceDictionary Source="MainViewResources.xaml" />
+    </UserControl.Resources>
+
+    <Border CornerRadius="0">
+        <!--<Border.Background>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+				<GradientStop Color="#FFCDCDCD" Offset="0" />
+				<GradientStop Color="#FFFFFFFF" Offset="1" />
+			</LinearGradientBrush>
+            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                <GradientStop Color="#BBBBBB" Offset="0" />
+                <GradientStop Color="#DDDDDD" Offset="1" />
+            </LinearGradientBrush>
+        </Border.Background>-->
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!--<Border Grid.Row="0" CornerRadius="15" Margin="8" >
+                <Border.BitmapEffect>
+                    <DropShadowBitmapEffect Direction="305" Opacity="1" ShadowDepth="5" />
+                </Border.BitmapEffect>
+
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="#FF6DE394" Offset="0" />
+                        <GradientStop Color="Yellow" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/TennisWpfControls;component/Images/TennisBall.gif" Width="auto" Margin="8,0,5,0"/>
+
+                    <StackPanel VerticalAlignment="Bottom">
+                        <TextBlock Text="Tennis Master" FontFamily="Calibri" FontWeight="Bold" FontSize="26" Foreground="#FF000044" Margin="0,8,0,0"/>
+
+                        <TextBlock Text="Tennis Master" FontFamily="Calibri" Foreground="#FF000044" FontWeight="Bold" FontSize="26" Height="25">
+				            <TextBlock.RenderTransform>
+					            <TransformGroup>
+							        <ScaleTransform ScaleX="1" ScaleY="-1" />
+							        <SkewTransform AngleX="0" AngleY="0" />
+							        <RotateTransform Angle="0"/>
+							        <TranslateTransform X="0" Y="20" />
+						        </TransformGroup>
+				            </TextBlock.RenderTransform>
+
+					        <TextBlock.OpacityMask>
+						        <LinearGradientBrush StartPoint="0.5,0.0" EndPoint="0.5,1.0">
+							        <GradientStop Offset="0.25" Color="#0a101010" />
+							        <GradientStop Offset="1.0" Color="#57101010" />
+						        </LinearGradientBrush>
+					        </TextBlock.OpacityMask>
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>-->
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="8,0,0,0">
+                <!--<Button Content="All Players" Command="{Binding Path=ViewAllPlayersCommand}"/>-->
+                <!--<Button Content="Event" Command="{Binding Path=ViewTennisEventCommand}"/>-->
+                <!--<Button Content="All Events" Command="{Binding Path=ViewAllTennisEventsCommand}"/>-->
+                <!--<Button Content="All Matches" Command="{Binding Path=ViewAllMatchesCommand}"/>-->
+                <Button Content="New Match" Command="{Binding Path=NewMatchCommand}"/>
+                <Button Content="New Player" Command="{Binding Path=NewPlayerCommand}"/>
+                <Button Content="New Event" Command="{Binding Path=NewEventCommand}"/>
+            </StackPanel>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{Binding Path=ItemDetailHeight}"/> <!--item detail-->
+                        <RowDefinition Height="0"/> <!--splitter-->
+                        <RowDefinition Height="*"/>    <!--match history-->
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Grid.Row="0" Grid.Column="0" Content="{Binding Path=ItemDetailViewModel}" MinHeight="100" MinWidth="100" HorizontalAlignment="center" VerticalAlignment="Center"/>
+                    <ContentControl Grid.Row="2" Grid.Column="0" Content="{Binding Path=MatchHistoryViewModel}" MinHeight="100" MinWidth="100"/>
+                    
+                    <GridSplitter ResizeDirection="Rows" 
+                        ResizeBehavior="BasedOnAlignment"
+                        Grid.ColumnSpan="2"
+                        Height="5"
+                        Width="auto"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Margin="0"
+                        Grid.Row="1" Grid.Column="0"/>
+                
+                </Grid>
+
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Grid.Row="0" Grid.Column="0" Content="{Binding Path=SummaryViewModel}" MinHeight="100" MinWidth="150"/>
+                </Grid>
+                
+                <!--<Grid Grid.Row="0" Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentControl Grid.Row="0" Grid.Column="0" Content="{Binding Path=ActiveViewModel}" MinHeight="100" MinWidth="100"/>
+                </Grid>-->
+            </Grid>
+        </Grid>
+    </Border>
+
+
+</UserControl>

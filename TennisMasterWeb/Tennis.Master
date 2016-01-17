@@ -1,0 +1,122 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Tennis.master.cs" Inherits="Tennis.Master" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>
+	<meta content="Microsoft Visual Studio .NET 7.1" name="GENERATOR">
+	<meta content="C#" name="CODE_LANGUAGE">
+	<meta content="JavaScript" name="vs_defaultClientScript">
+	<meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
+	<link href="styles/tennis.css" type="text/css" rel="stylesheet">
+	<link href="styles/DatePicker.css" type="text/css" rel="stylesheet">
+	
+	<%--		<link href="tennis.css" type="text/css" rel="stylesheet">
+		<link href="tennis-print.css" type="text/css" rel="stylesheet" media="print">
+--%>
+</head>
+<body>
+<%--	<uc1:headercontrol id="HeaderControl1" runat="server" />
+--%>	
+	<form id="Form1" method="post" runat="server">
+
+		<div id="logo" class="header">
+			<asp:HyperLink runat="server" ID="HomeImage" NavigateUrl="~/Home.aspx" ImageUrl="~/images/TennisBall.gif" Text="Tennis Master" BorderWidth="0" BackColor="transparent" />
+			<span id="Title"><asp:HyperLink runat="server" ID="HomeTitle" NavigateUrl="~/Home.aspx" Text="Tennis Master" /></span>
+		</div>
+
+		<div id="logout" class="header">
+				<asp:LoginStatus ID="LoginStatus1"
+				  runat="server" OnLoggingOut="LoginStatus1_LoggingOut" /><br />
+			<%=Csla.ApplicationContext.User.Identity.Name%>
+		</div>
+
+		<div id="banner">
+		</div>
+
+		<div id="bannerTrim">
+		</div>
+
+		<div id="menuTrim">
+		</div>
+
+	<div id="menu">
+		<asp:Menu ID="MainMenu" runat="server" Orientation="Horizontal" StaticEnableDefaultPopOutImage="False" CssClass="menu" 
+			StaticMenuStyle-CssClass="StaticMenu"			DynamicMenuStyle-CssClass="DyanmicMenu"
+			StaticMenuItemStyle-CssClass="StaticMenuItem"	DynamicMenuItemStyle-CssClass="DyanmicMenuItem"
+			StaticHoverStyle-CssClass="StaticMenuHover"		DynamicHoverStyle-CssClass="DyanmicMenuHover"
+			StaticSelectedStyle-CssClass="StaticSelected"	DynamicSelectedStyle-CssClass="DyanmicSelected"
+			>
+			<Items>
+				<asp:MenuItem Text="Home" NavigateUrl="~/Home.aspx" />
+				<asp:MenuItem Text="Matches" NavigateUrl="~/PlayerMatchList.aspx">
+					<asp:MenuItem Text="Add Match" NavigateUrl="~/Match.aspx"></asp:MenuItem>
+					<%--<asp:MenuItem Text="View Matches" NavigateUrl="~/PlayerMatchList.aspx"></asp:MenuItem>--%>
+				</asp:MenuItem>
+				<%--<asp:MenuItem Text="Results" Value="Results" NavigateUrl="~/PlayerMatchList.aspx" />--%>
+				<asp:MenuItem Text="Players" NavigateUrl="~/OpponentSummary.aspx">
+					<asp:MenuItem Text="Add Player" NavigateUrl="~/Player.aspx" ></asp:MenuItem>
+					<%--<asp:MenuItem Text="View" Value="View"></asp:MenuItem>--%>
+				</asp:MenuItem>
+				<asp:MenuItem Text="Events" NavigateUrl="~/EventSummary.aspx">
+					<asp:MenuItem Text="Add Event" NavigateUrl="~/Event.aspx"></asp:MenuItem>
+					<%--<asp:MenuItem Text="View" Value="View"></asp:MenuItem>--%>
+				</asp:MenuItem>
+				<asp:MenuItem Text="Classifications" NavigateUrl="~/ClassificationList.aspx">
+					<asp:MenuItem Text="Add Classification" NavigateUrl="~/Classification.aspx"></asp:MenuItem>
+					<%--<asp:MenuItem Text="View" Value="View"></asp:MenuItem>--%>
+				</asp:MenuItem>
+				<asp:MenuItem Text="Account" NavigateUrl="~/Account/Account.aspx">
+					<asp:MenuItem Text="Change Password" NavigateUrl="~/Account/ChangePassword.aspx" />
+				</asp:MenuItem>
+				<asp:MenuItem Text="Admin" NavigateUrl="~/Admin.aspx" />
+			</Items>
+		</asp:Menu>
+	</div>
+
+<%--		<div id="Navigation">
+			<asp:xml id="xmlMenu" runat="server" documentsource="menu/Admin.xml" transformsource="menu/menu.xslt"/>
+		</div>
+--%>
+		<%--
+		<div class="debug">
+			<table style="font-size:8pt;" cellpadding="0" cellspacing="0">
+				<tr><td>uid:</td><td><%=Session["uid"]%></td></tr>
+				<tr><td>pid:</td><td><%=Session["playerid"]%></td></tr>
+				<tr><td>name:</td><td><%=Session["PlayerName"]%></td></tr>
+				<tr><td>role:</td><td><%=Session["role"]%></td></tr>
+				<tr><td>tckt:</td><td><%=Request.Cookies["tennis"].Value.Substring(0,16)%></td></tr>
+			</table>
+		</div>
+		--%>
+
+		<div id="webmaster" class="header">
+			comments and suggestions<br>
+			to <a href="mailto:webmaster@bahns.com">webmaster@bahns.com</a>
+		</div>
+
+		<div id="content"">
+		<table>
+			<tr><td colspan="2">
+				<asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+				</asp:ContentPlaceHolder>
+			</td></tr>
+			<tr runat="server" id="EditingControls" visible="false">
+			<td align="left" valign="top" class="refresh"><a href="<%=this.Page.Request.Url.ToString()%>">refresh</a></td>
+			<td align="right">
+				<span runat="server" id="ButtonsPlaceHolder">
+					<%--<asp:ContentPlaceHolder ID="ButtonsPlaceHolder" runat="server" >--%>
+					<asp:Button ID="Submit" runat="server" Text="     OK     " />
+					<asp:Button ID="Cancel" runat="server" Text="   Cancel   " CausesValidation="False" />
+					<asp:Button ID="Edit" runat="server" Text="     Edit     " CausesValidation="false" />
+				<%--</asp:ContentPlaceHolder>--%>
+				</span>
+			</td></tr>
+		</table>
+			
+
+			<asp:Literal ID="Status" runat="server" />
+		</div>
+    </form>
+</body>
+</html>

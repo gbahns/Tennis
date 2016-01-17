@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="menu.xslt"?>
+<xml>
+	<menu text="Home" url="Home.aspx"/>
+	<menu text="Resume" url="Resume.aspx">
+		<menu text="Certifications" url="Resume.aspx#Certifications"/>
+		<menu text="Summary" url="Resume.aspx#Summary"/>
+		<menu text="Experience" url="Resume.aspx#Experience"/>
+		<menu text="Other" url="Resume.aspx#Other"/>
+		<menu text="Education" url="Resume.aspx#Education"/>
+		<menu text="References" url="Resume.aspx#References"/>
+	</menu>
+	<menu text="Software" url="Software.aspx">
+		<!--
+		<menu text="Articles" url="Articles.aspx"/>
+		-->
+		<menu text="OO-Win32" url="OO-Win32.aspx"/>
+		<menu text="Shareware" url="Shareware.aspx">
+			<menu text="G-Menu" url="G-Menu.aspx"/>
+			<menu text="BBStats" url="BBStats.aspx"/>
+			<menu text="Chariot Race" url="ChariotRace.aspx"/>
+			<menu text="G-Dialogs" url="G-Dialogs.aspx"/>
+			<menu text="G-Cards" url="G-Cards.aspx"/>
+			<menu text="Screen Savers" url="ScreenSavers.aspx"/>
+		</menu>
+		<menu text="Demo Sites" url="DemoSites.aspx">
+			<menu text="Tennis" url="Tennis.aspx"/> <!-- http://"+Application('ip')+"/tennis.net -->
+			<menu text="Softball Stats" url="SoftballStats.aspx"/>
+			<menu text="Bug Tracking" url="BugTracking.aspx"/>
+		</menu>
+	</menu>
+	<!--
+	<menu text="Links" url="Links.aspx">
+	</menu>
+	<menu text="Interests" url="Interests.aspx">
+		<menu text="Philosophy" url="Philosophy.aspx">
+			<menu text="Links" url="Links.aspx"/>
+			<menu text="Articles" url="Articles.aspx"/>
+		</menu>
+		<menu text="Sports" url="Sports.aspx"/>
+		<menu text="News" url="News.aspx"/>
+	</menu>
+	-->
+	<menu text="About" url="About.aspx"/>
+	<menu text="Contact" url="mailto:gregbahns.com"/>
+</xml>

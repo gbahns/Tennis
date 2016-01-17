@@ -1,0 +1,118 @@
+.FieldLabel
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 75%;
+    FONT-STYLE: italic;
+    FONT-FAMILY: arial
+}
+A:hover
+{
+    COLOR: blue;
+    TEXT-DECORATION: underline
+}
+.NavMenu
+{
+    FONT-SIZE: 9pt;
+    WIDTH: 100pt;
+    FONT-STYLE: italic;
+    FONT-FAMILY: Arial;
+    BACKGROUND-COLOR: #7b68ee;
+    TEXT-ALIGN: right;
+    TEXT-DECORATION: none
+}
+.NavMenu A
+{
+    COLOR: red;
+    TEXT-DECORATION: none
+}
+.NavMenu .Head
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 11pt;
+    COLOR: midnightblue;
+    FONT-STYLE: italic;
+    FONT-FAMILY: arial;
+    align: left
+}
+.NavMenu .Item
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10pt;
+    FONT-FAMILY: arial;
+    TEXT-DECORATION: none
+}
+.MainForm
+{
+    BACKGROUND-COLOR: royalblue
+}
+.Body
+{
+    FONT-SIZE: 10pt;
+    FONT-FAMILY: Arial;
+    BACKGROUND-COLOR: #33ccff
+}
+.Title
+{
+    WIDTH: 100%;
+    FONT-FAMILY: Arial;
+    BACKGROUND-COLOR: #0000cd;
+    TEXT-ALIGN: center
+}
+.Title TH
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 18pt;
+    COLOR: yellow;
+    FONT-STYLE: italic
+}
+.Title TD
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    TEXT-ALIGN: center
+}
+.NavMenu .Head TR
+{
+    FONT-SIZE: 12pt;
+    BACKGROUND-COLOR: aqua
+}
+.Body .Error
+{
+    FONT-SIZE: 10pt
+}
+.Body .Error .Head
+{
+    FONT-WEIGHT: 600;
+    COLOR: red
+}
+.Body .Data
+{
+}
+.Body .Data TABLE
+{
+    FONT-SIZE: 10pt;
+    BACKGROUND-COLOR: floralwhite
+}
+.Body .Data TABLE TH
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 11pt;
+    COLOR: white;
+    BACKGROUND-COLOR: royalblue
+}
+.Body .Data TABLE TD
+{
+}
+.Body .Dialog
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10pt;
+    FONT-STYLE: italic;
+    BACKGROUND-COLOR: lightblue
+}
+.Body .Dialog A
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 9pt;
+    FONT-STYLE: normal
+}

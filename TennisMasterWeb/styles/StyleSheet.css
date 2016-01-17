@@ -1,0 +1,149 @@
+﻿body 
+{
+	margin: 2px;
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #1f3169;
+	/*FONT-WEIGHT: bold;*/
+	/*FONT-SIZE: 8pt;
+	COLOR: #1f3169;
+	FONT-FAMILY: Arial*/
+}
+
+input
+{
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 8pt;
+}
+
+textarea
+{
+	font-family: Tahoma, Verdana, Arial;
+	font-size: 8pt;
+}
+
+.HeaderData
+{
+	background-color: #dddddd;
+	font-size: 8pt;
+	font-family: Tahoma, Verdana, Arial;
+}
+
+/*.HeaderData td
+{
+	vertical-align: middle;
+	padding: 2px;
+	padding-left: 10px;
+}*/
+.HeaderData table
+{
+	width: 100%;
+	margin: 0px;
+	border-width: 0px;
+}
+
+/*.HeaderData table tr
+{
+	height: 40px;
+}
+*/
+.HeaderData table tr td
+{
+	padding: 0px;
+	text-align: center;
+}
+
+.HeaderData .Label
+{
+	font-weight: bold;
+	color: #1f3169;
+	padding-right: 2px;
+}
+
+.HeaderData .Value
+{
+	font-weight: normal;
+	color: #000000;
+}
+
+.Label
+{
+	font-weight: bold;
+	font-size: 8pt;
+	color: #1f3169;
+	font-family: Tahoma, Verdana, Arial;
+	width: 145px;
+
+	border:solid 0px black; 
+	vertical-align: top;
+	white-space: nowrap;
+
+}
+
+table thead
+{
+	padding: 2px 2px 2px 10px;
+	margin: 2px 2px 2px 10px;
+	border-spacing: 0px;
+	background-color: Navy;
+	color: White;
+	text-align: left;
+}
+
+table thead a
+{
+	color: #aaaaff;
+}
+
+table thead tr  
+{
+	text-indent: 8px;
+}
+
+table thead tr td 
+{
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+table 
+{
+	border: solid 1px #bbbbbb;
+	vertical-align: top;
+}
+
+table tr td
+{
+	vertical-align: top;
+}
+
+.Title
+{
+	position : absolute;
+	top : 0px;
+	left : 0px;
+	width: 100%;
+	/*height: 100%;*/
+	background-color: Navy;
+	color: White;
+	font-weight: bold;
+	padding: 2px 2px 2px 10px;
+	display: none;
+}
+
+.GroupBox
+{
+	background: white;
+	width: auto;
+	padding: 0;
+	border-spacing: 0;
+}
+
+.Error
+{
+	margin: 20px;
+	font-weight: bold;
+	color: red;
+}
+

@@ -1,0 +1,3 @@
+﻿CREATE UNIQUE NONCLUSTERED INDEX [Name] ON [dbo].[Events] ([Name]) ON [PRIMARY]
+
+

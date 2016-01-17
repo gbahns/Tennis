@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="TennisWpfControls.View.PlayerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    MinHeight="30" MinWidth="60">
+    <Border CornerRadius="6" Padding="4" Margin="5" BorderThickness="2" BorderBrush="Black" Background="wheat">
+        <StackPanel >
+            <TextBlock Text="{Binding Path=DisplayName}" Background="Navy" Foreground="White" Padding="2" FontWeight="bold"/>
+            
+            <!--<TextBlock Text="ID" Margin="4,4,4,0" HorizontalAlignment="Left"/>
+            <TextBox Margin="4,0,4,4" Width="30" Text="{Binding Path=ID, Mode=OneWay}" HorizontalAlignment="Left" IsReadOnly="True" Background="LightGoldenrodYellow"/>-->
+
+            <TextBlock Text="First Name" Margin="4,4,4,0" HorizontalAlignment="Left"/>
+            <TextBox Name="FirstNameTextBox" Margin="4,0,4,4" Width="150" Text="{Binding Path=FirstName}" HorizontalAlignment="Left" IsReadOnly="True" Background="LightGoldenrodYellow"/>
+            
+            <TextBlock Text="Last Name" Margin="4,4,4,0" HorizontalAlignment="Left"/>
+            <TextBox Name="LastNameTextBox" Margin="4,0,4,10" Width="150" Text="{Binding Path=LastName}" HorizontalAlignment="Left" IsReadOnly="True" Background="LightGoldenrodYellow"/>
+        
+            <Button Content="Edit Player" HorizontalAlignment="Right" Command="{Binding Path=EditItemCommand}" IsDefault="True"/>
+        </StackPanel>
+    </Border>
+</UserControl>

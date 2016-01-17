@@ -1,0 +1,620 @@
+/*****************************
+* header and top-level stuff *
+*****************************/
+body {
+	padding:0;
+	margin:0;
+	background : #FFFFF0 /*url(images/nav.jpg) repeat-y*/;
+	}
+	
+.header {
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #fff;
+    z-index : 50;
+	}
+	
+#logo {
+	position : absolute;
+    top : 5px;
+    left : 5px;
+	font-size: 20pt;
+	font-weight: bold;
+	color: #CCCC00; 
+	z-index: 1001;
+	white-space: nowrap;   
+	}
+	
+#logo img {
+	width: 64px;
+	height: 64px;
+	border-style: none;
+	}
+	
+#logo #Title {
+	position: absolute;
+	top: 15px;
+	left: 70px;
+	}
+	
+#logo #Title A {
+	text-decoration:none;
+	color: #FFFF00;    
+	}
+	
+#logo #Title A:hover {
+	color: White;    
+	}
+	
+#logout {
+	position: absolute;
+	top: 10px;
+	left: 0px;
+	width: 100%;
+	text-align: center;
+	}
+	
+#logout A {
+	font-size: 10pt;
+	color: #CCCC00;
+	font-weight: bold;
+	text-decoration:none;
+	}
+
+#logout A:hover {
+	color: black;
+	background-color: #CCCC00;
+	}
+
+#webmaster {
+    position : absolute;
+    top : 8px;
+    right : 0;
+    text-align : right; /*Mild hack for Netscape 4*/
+    /* note: the hack only works on load/re-load; it does not work on re-size */
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size:8pt;
+	font-weight: bold;
+	padding:2px;
+	padding-left:10px;
+	color: White;
+	}
+
+#webmaster A {
+	color:#CCCC00;
+	text-decoration:none;
+	}
+
+#webmaster A:hover {
+	background:#CCCC00;
+	color:black;
+	}
+
+#banner {
+	position : absolute;
+	top : 0px;
+	left : 0px;
+	width : 100%;
+	/*height: 144;*/
+	background-image:url(images/banner.gif);
+	background-repeat:repeat-x;
+	text-align: center;
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 30pt;
+	z-index: 1000;
+	}
+
+.debug {
+	position : absolute;
+	right: 0;
+	bottom: 0;
+	font-family: verdana;
+	font-size: 7pt;
+	color: black;
+	}
+.debug tr {
+	font-family: verdana;
+	font-size: 8pt;
+	color: black;
+	}
+
+#menu 
+{
+	/*
+	background-color: Green;
+	color: White;
+	border-color: Black;
+	border-width: 0px;
+	border-style: solid;
+	sp
+*/
+	font-family: verdana;
+	font-size: 13px;
+	text-align: left;
+	padding:0;
+	margin:0;
+}
+
+.menu
+{
+	position: absolute;
+	top: 75px;
+	left: 10px;
+
+	background-color: green;
+	color: yellow;
+	border-color: Black;
+	border-width: 0px;
+	border-style: solid;
+	padding: 0px;
+	padding-right:0px;
+}
+
+.StaticMenu
+{
+}
+
+.StaticMenuItem
+{
+	background-color:Green;
+	margin-left: 0px;
+	padding-left: 4px;
+	margin-right: 4px;
+	color: White;
+	font-weight: bold;
+	border: solid 0px green;
+}
+
+.StaticMenuHover
+{
+	border: solid 0px yellow;
+	background-color:#c0f0c0;
+	color: black;
+}
+
+.StaticSelected
+{
+	background-color:Orange;
+}
+
+.DyanmicMenu
+{
+	background-color:#c0f0c0;
+	border: solid 1px black;
+	margin-top: 1px;
+	font-size: 85%;
+}
+
+.DyanmicMenuItem
+{
+	background-color:#00b000;
+	padding: 2px;
+	color: White;
+}
+
+.DyanmicMenuHover
+{
+	background-color:#c0f0c0;
+	color: Black;
+}
+
+.DyanmicSelected
+{
+	background-color:Orange;
+}
+
+/*
+.menu a
+{
+	color: #bbbbbb;
+}
+
+.menu a:hover
+{
+	color: Black;
+}
+*/
+
+/***********************
+* Left-side Navigation *
+***********************/
+/*The navigation on the left side, positioned absolutely*/
+#Navigation {
+	position : absolute;
+	top : 50px;
+	left : 5px;
+	width : 140px;
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color : #f0f;
+	background-color: transparent;
+	/*padding: 5px;
+	padding-top: 5px;
+	padding-left: 10px;*/
+	bottom:0;
+    height: 90%;
+    }
+#Navigation table {
+	/*background-color: #c0dcc0;*/
+	background-color: #c8e4c8;
+	border-width: 1px;
+	border-color: #c0dcc0;
+	border-style: groove;
+	width: 136px;
+	text-indent: 2px;
+    }
+#Navigation table table table {
+	border-style: none;
+	/*margin-left: 25px;*/
+	/*padding-left: 10px;*/
+	text-indent: 12px;
+    }
+#Navigation a {
+	font-size:9pt;
+	color:black;
+	text-decoration:none;
+	font-weight:bold;
+	line-height: 130%;
+	display:block;
+	/*width:100%;*/
+	width:100%;
+	height:100%;
+	border-width: 1px;
+	/*border-color: #000;*/
+	border-style:  groove;
+	}
+#Navigation a:hover {
+	background:#CCCC00;
+	color:black;
+	border-width: 1px;
+	border-color: #000;
+	border-style: solid;
+	}
+#Navigation .selected a {
+	background-color: #a0b8a0;
+	color:#CCCC00;
+	border-width: 1px;
+	border-color: #fff;
+	border-style: solid;
+	}
+#Navigation .selected a:hover {
+	background:#CCCC00;
+	color:black;
+	}
+
+
+/********************
+* main content area *
+********************/
+#content {
+	padding-top : 120px;
+	padding-bottom : 20px;
+	padding-left : 0px;
+	padding-right : 20px;
+	font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #00A;
+	}
+
+#content h1 {
+	font-family : "Trebuchet MS", Georgia, Times, serif;
+	font-size : 130%;
+	font-weight : bold;
+	color : #00A;
+	background-color : transparent;
+	}                     
+
+#content h2 {
+	font-family: "Trebuchet MS", Georgia, Times, serif;
+	font-size: 115%;
+	font-weight: bold;
+	font-style: italic;
+	color: #00A;
+	background-color : transparent;
+	}
+
+#content p {
+	/*font-family : "Trebuchet MS", Georgia, Times,serif;
+	font-size : 80%;
+	font-weight : normal;*/
+	color : #00A;
+	background-color : transparent;
+	line-height : 140%;
+	}
+	
+#content #TableOfContents {
+	font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 80%;
+	font-weight : normal;
+	color : #000;
+	background-color: #FFFFF6;
+	border: solid 1px #000;
+	}
+
+#content #TableOfContents caption {
+	text-align: left;
+	font-family: "Trebuchet MS", Georgia, Times, serif;
+	font-size: 140%;
+	font-weight: bold;
+	font-style: italic;
+	color: #00A;
+	}
+#content #TableOfContents td {
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 4px;
+	padding-bottom: 4px;	
+	vertical-align: top;
+	}
+
+#content #TableOfContents A {
+	color: #66c;
+	text-decoration:none;
+	font-weight:bold;
+	}
+	
+#content #TableOfContents A:hover {
+	color: #000;
+	background-color: #aaaad4;
+	}
+	
+#content pre {
+	font-family: "Lucida Console" "Courier New" Courier;
+	font-size: 8pt;
+	color: #000;
+	padding: 4px;
+	background-color: #fff;
+	border: solid 1px #000;
+	}
+	
+/* I don't think the script ID is used */
+#script {
+    position : absolute;
+    top : 12px;
+    right : 0;
+    text-align : right; /*Mild hack for Netscape 4*/
+    /* note: the hack only works on load/re-load; it does not work on re-size */
+	}
+
+
+/*********
+* Resume *
+*********/
+#Resume {
+	padding-top : 50px;
+	padding-bottom : 10px;
+	padding-left : 160px;
+	padding-right : 10px;
+    /*padding: 0px; /* not overriding .Content for some reason */
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	text-align: right;
+	}
+#Resume table {
+	font-size:10pt;
+	color: #000088;
+	}
+#Resume p {
+	font-size:10pt;
+	color: #000088;
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	}
+#Resume #Name {
+	text-align:center;
+	font-weight:bold;
+	font-size:150%;
+	}
+#Resume #Address td {
+	text-align:center;
+	font-weight:bold;
+	font-size:120%;
+	padding-bottom: 10px;
+	}
+#Resume #Address td A {
+	text-decoration:none;
+	color:#008;
+	}
+#Resume #Address td A:hover {
+	background:#FF7;
+	color:blue;
+	}
+#Resume th {
+	vertical-align:top;
+	background:#F0F0E0;
+	font-size: 110%;
+	padding:4px;
+	margin:0;
+	border-top:2px groove #BBBBB0;
+	}
+#Resume td {
+	padding:0;
+	margin:0;
+	padding-left:10px;
+	border-top:2px groove #BBBBB0;
+	padding:4px;
+	}
+#Resume .Header td {
+	border-width: 0px;
+	padding:0px;
+	}
+#Resume td td {
+	border-width: 0px;
+	padding:0px;
+	}
+
+/* major employer/industry descriptions in the left column */
+#Resume .Job {
+	vertical-align:top;
+	background:#F0F0E0;
+	font-size: 100%;
+	border-top:2px groove #BBBBB0;
+	padding:4px;
+	}
+
+#Resume .Title {
+	font-weight:bold;
+	margin:0;
+	}
+#Resume UL {
+	margin:0 0 0 0;
+	padding-left: 20px; /* works for both IE and NS7; margin-left doesn't */
+	list-style-type: disc;
+	}
+#Resume UL UL {
+	list-style-type: disc;
+	}
+/*
+this comment is here to describe how to add images as bullets in the future.
+list-style
+
+list-style-type
+disc Default. Solid circles. 
+circle Outlined circles. 
+square Solid squares. 
+none No marker is shown. 
+
+list-style-position:
+	outside Default. Marker is placed outside the text, and any wrapping text is not aligned under the marker. 
+	inside Marker is placed inside the text, and any wrapping text is aligned under the marker. 
+
+list-style-image:
+	none Default. No image is specified. 
+	url(sURL) Location of the image, where sURL is an absolute or relative URL. 
+*/
+
+
+/************************
+* Tennis Master Styling *
+************************/
+
+.Data 
+{
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    background-color: #ffffff; /*#c0c0ff;*/
+    border-color: Black;
+	border-width: 1px;
+	text-align: left;
+}
+.LeftAlign
+{
+	text-align: left;
+}
+.RightAlign
+{
+	text-align: right;
+}
+.Data td
+{
+    background-color: #e0f0e0;
+    border-color: Black;
+    border-width: 0px;
+    vertical-align: top;
+    /*margin-top:5px;
+    height:120%;*/
+    /*line-height: 120%;*/
+    /*padding: 10px; - doesn't highlight the margin if it is "padding" */
+    text-indent: 2px;/* - no corresponding deal for the right */
+    margin-left: 5px;
+    margin-right: 5px;
+    /*padding-left: 1px;
+    padding-right: 1px;*/
+}
+.Data .AltItem td
+{
+    background-color: #ebfbeb;
+}
+/*
+In CSS, one could suggest that an A element be rendered as a block, e.g.
+&lt;a href="..." style="display:block; width:5em; height:2em"&gt;some text&lt;/a&gt;
+Browsers do different things with that. Netscape doesn't do much. Opera
+applies the dimensions (and other suggestions), but it's still the text
+that acts as the clickable part. And IE 5 seems do what the questioner
+wanted: the entire block is clickable. When the link is in a table cell
+so that the dimensions of the cell depend on the dimensions of other
+cells in the same row and same column, one can use width:100% and
+height:100% to suggest that the link text should cover the entire cell
+(minus cellpadding).				
+*/
+.Data td a
+{
+    /*background-color: #e0f0e0;*/
+	color: black;
+	text-decoration: none;
+	display:block;
+	width:100%;
+	height:100%;
+	border-width: 0px;
+	border-style: inset;
+	/*border-color: #e0f0e0;*/
+}
+.Data td a:hover
+{
+    background-color: #ffdd00;
+	color: black;
+	border-color: #000;
+	border-width: 0px;
+	border-style: solid;
+}
+.Data th
+{
+    color: white;
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+	text-align: center;
+    background-color: #40a040;
+    font-weight: bold;
+	color: White;
+}
+.Data th a
+{
+	color: white;
+	border-color: #007050;
+
+	text-decoration: none;
+	display:block;
+	width:100%;
+	height:100%;
+	border-width: 0px;
+	border-style: inset;
+}
+.Data th a:hover
+{
+	background-color: Orange;
+    color: white;
+	border-color: #007050;
+}
+/*
+.DataHeader
+{
+    color: white;
+    font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+	text-align: center;
+}
+.DataHeader td
+{
+    background-color: #007050; /*banner color: #007f7f
+    font-weight: bold;
+	color: White;
+}
+*/
+
+.Dialog 
+{
+	font-size:10pt;
+	color:Black;
+	background-color:#EAEAFF;
+    border-color:Black;
+    border-width:1;
+    border-style:solid;
+	vertical-align:top;
+}
+.Dialog TD
+{
+    padding:1;
+	vertical-align:top;
+}
+.Dialog caption
+{
+    FONT-SIZE: 16pt;
+    font-weight:bold;
+}

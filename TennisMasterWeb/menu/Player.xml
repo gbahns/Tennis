@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="menu.xslt"?>
+<xml>
+  <menu text="Home" url="PlayerSummary.asp">
+    <menu text="My Matches" url="MatchList.asp?id=1"></menu>
+  </menu>
+  <menu text="Matches" url="PlayerSummary.asp">
+    <menu text="My Matches" url="MatchList.asp?id=1"></menu>
+  </menu>
+  <menu text="Players" url="PlayerList.asp">
+		<menu text="Add Player" url="Player.asp"></menu>
+	</menu>
+	<menu text="Teams" url="TeamList.asp">
+		<menu text="Add Team" url="Team.asp"></menu>
+	</menu>
+	<menu text="Matches" url="MatchList.asp">
+		<menu text="Add Match" url="Match.asp"/>
+	</menu>
+	<menu text="Events" url="EventList.asp">
+		<menu text="Add Event" url="Event.asp"/>
+	</menu>
+	<menu text="Classification" url="ClassificationList.asp">
+		<menu text="Add Classification" url="Classification.asp"/>
+	</menu>
+	<menu text="About" />
+	<menu text="Contact" url="mailto:gregbahns.com"/>
+</xml>

@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="TennisWpfControls.View.PlayerOpponentSummaryView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:my="clr-namespace:TennisWpfControls.ViewModel"
+    xmlns:util="clr-namespace:Wpf.Util">
+
+    <Border CornerRadius="6" Padding="6" Margin="5" BorderThickness="2" BorderBrush="Black" Background="wheat">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=DisplayName}" Background="Navy" Foreground="White" Padding="2" FontWeight="bold"/>
+
+            <ListView Grid.Row="1" Grid.Column="0" MinWidth="300" MinHeight="100" ItemsSource="{Binding Path=List}" my:SelectionBehavior.SelectionChanged="{Binding ChangeSelectedItemCommand}" util:GridViewSort.AutoSort="True">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Approve" Name="Approve" IsEnabled="{Binding Path=ApproveEnabled}" />
+                        <Separator></Separator>
+                        <MenuItem Header="Unapprove" Name="Unapprove" IsEnabled="{Binding Path=UnapproveEnabled}" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.View>
+                    <GridView AllowsColumnReorder="true">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="auto" util:GridViewSort.PropertyName="Name"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Matches.Total}" Header="Matches" Width="auto" util:GridViewSort.PropertyName="Matches.Total"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=MatchesWon}" Header="M-W" Width="auto" util:GridViewSort.PropertyName="MatchesWon"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=MatchesLost}" Header="M-L" Width="auto" util:GridViewSort.PropertyName="MatchesLost"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=MatchesPct, StringFormat=0.000}" Header="M-Pct" Width="auto" util:GridViewSort.PropertyName="MatchesPct"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+        </Grid>
+    </Border>
+</UserControl>

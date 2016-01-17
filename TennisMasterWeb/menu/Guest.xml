@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="menu.xslt"?>
+<xml>
+  <menu text="Home" url="PlayerOpponentSummary.asp">
+  </menu>
+  <menu text="Matches" url="PlayerOpponentSummary.asp">
+  </menu>
+  <menu text="Players" url="PlayerList.asp">
+	</menu>
+	<menu text="Matches" url="MatchList.asp">
+	</menu>
+	<menu text="Events" url="EventList.asp">
+	</menu>
+	<menu text="Contact" url="mailto:gregbahns.com"/>
+</xml>
