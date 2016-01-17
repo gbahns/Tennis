@@ -38,11 +38,10 @@
     <ModelCollation>1033,CI</ModelCollation>
     <ValidateCasingOnIdentifiers>False</ValidateCasingOnIdentifiers>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9c7d122d-5868-4b4b-a61d-b74d75c08bdc}</ProjectGuid>
+    <ProjectGuid>{f10f591d-3847-401c-967c-3768b3545ea2}</ProjectGuid>
     <GenerateDatabaseFile>False</GenerateDatabaseFile>
     <GenerateCreateScript>False</GenerateCreateScript>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <SqlServerVerification>False</SqlServerVerification>
     <TargetLanguage>CS</TargetLanguage>
     <AllowSnapshotIsolation>False</AllowSnapshotIsolation>
     <AnsiNullDefault>True</AnsiNullDefault>
@@ -145,7 +144,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Permissions.sql" />
+    <Build Include="Permissions_1.sql" />
     <Build Include="Schema Objects\Functions\dbo.fn_get_player_history.function.sql">
       <SubType>Code</SubType>
     </Build>
