@@ -39,8 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseMatchParser.cs" />
+    <Compile Include="DynamicMatchParser.cs" />
     <Compile Include="MatchConverter.cs" />
-    <Compile Include="MatchParser.cs" />
+    <Compile Include="StructuredMatchParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

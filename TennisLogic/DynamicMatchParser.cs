@@ -7,8 +7,8 @@ using TennisModel;
 
 namespace TennisLogic
 {
-    public static class MatchParser
-    {
+	public static class DynamicMatchParser
+	{
 		public static bool isVictoryIndicator(this string token)
 		{
 			HashSet<string> tokenSet = new HashSet<string> { "W", "L", "WIN", "LOSS" };
@@ -34,70 +34,6 @@ namespace TennisLogic
 			return false;
 		}
 
-		public static Score parseScore(this string scoreString)
-		{
-			if (scoreString.Length == 2)
-				scoreString = scoreString.Insert(1, "-");
-
-			string[] scores = scoreString.Split('-');
-			Score score = new Score();
-			score.W = byte.Parse(scores[0]);
-			score.L = byte.Parse(scores[1]);
-			return score;
-		}
-
-		public static Set parseSetScore(this string setString)
-		{
-			setString = setString.Replace(" ","");
-			string[] scores = setString.Split("()".ToCharArray());
-			Set set = new Set();
-			set.Games = parseScore(scores[0]);
-			if (scores.Length > 1)
-				set.Tiebreak = parseScore(scores[1]);
-			return set;
-		}
-
-		public static List<Set> parseMatchScore(this string scoreString)
-		{
-			//example: 64
-			//example: 6-4
-			//example: 64 75
-			//example: 36 10(75) 10(74)
-			List<Set> setList = new List<Set>(5);
-			var array = scoreString.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-			foreach (var setString in array)
-			{
-				var set = parseSetScore(setString);
-				setList.Add(set);
-			}
-			setList.Capacity = setList.Count;
-			return setList;
-		}
-
-		public static void setResult(PlayerMatch match, string token)
-		{
-			if (match.Result != "")
-				throw new FormatException("Match result is specified twice.");
-			match.Result = token.Substring(0, 1).ToUpper();
-		}
-
-		public static void setOpponent(PlayerMatch match, string token)
-		{
-			match.OpponentName = token;
-		}
-
-		public static void setScore(PlayerMatch match, string token)
-		{
-			token = token.ToLower();
-			if (token.Contains("default"))
-			{
-				match.Defaulted = true;
-				token = token.Replace("default", "");
-			}
-			List<Set> sets = parseMatchScore(token);
-			match.Score.Sets.AddRange(sets);
-		}
-
 		public static PlayerMatch parseMatch(this string matchString)
 		{
 			var match = new PlayerMatch();
@@ -115,7 +51,7 @@ namespace TennisLogic
 				}
 				else if (isScore(token))
 				{
-					List<Set> sets = parseMatchScore(token);
+					List<Set> sets = BaseMatchParser.parseMatchScore(token);
 					match.Score.Sets.AddRange(sets);
 				}
 				else if (DateTime.TryParse(token, out matchDate))
@@ -162,46 +98,6 @@ namespace TennisLogic
 					match.OpponentName += token;
 				}
 			}
-			return match;
-		}
-
-		public static PlayerMatch parseMatch(this string matchString, string[] columns)
-		{
-			var match = new PlayerMatch();
-			var matchDate = match.Date;
-			var delimiter = matchString.Contains("\t") ? "\t" : matchString.Contains(",") ? "," : " ";
-			var array = matchString.Split(delimiter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-
-			int currentColumn = 0;
-
-			foreach (var token in array)
-			{
-				switch (columns[currentColumn])
-				{
-					case "Result":
-						setResult(match, token);
-						break;
-						
-					case "Opponent":
-						setOpponent(match, token);
-						break;
-
-					case "Score":
-						setScore(match, token);
-						break;
-
-					case "Date":
-						match.Date = DateTime.Parse(token) + new TimeSpan(6, 0, 0);
-						break;
-
-					case "Time":
-						match.Date = match.Date.Date + DateTime.Parse(token).TimeOfDay;
-						break;
-				}
-
-				currentColumn++;
-			}
-
 			return match;
 		}
 

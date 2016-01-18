@@ -50,7 +50,7 @@ namespace TennisTests.MatchParse
 			//var array = input.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 			//foreach (var token in array)
 			//	Assert.True(MatchParser.isScore(token), token);
-			Assert.True(MatchParser.isScore(input), input);
+			Assert.True(DynamicMatchParser.isScore(input), input);
 		}
 
 		[Theory]
@@ -80,7 +80,7 @@ namespace TennisTests.MatchParse
 		[InlineData("Rutherford")]
 		public void Input_Is_Not_A_Score(string token)
 		{
-			Assert.False(MatchParser.isScore(token));
+			Assert.False(DynamicMatchParser.isScore(token));
 		}
 	}
 }

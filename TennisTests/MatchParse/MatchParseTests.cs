@@ -56,7 +56,7 @@ namespace TennisTests
 		[InlineData("L Suraj 63 64 3/11/2015 6am", "L", "Suraj", "6-3 6-4", "3/11/2015 6:00 AM", false)]
 		public void ParseMatchString(string input, string result, string opponent, string score, string date, bool isDefault)
 		{
-			PlayerMatch match = MatchParser.parseMatch(input);
+			PlayerMatch match = DynamicMatchParser.parseMatch(input);
 //			Debug.WriteLine(match.ToString());
 			Trace.WriteLine(match.ToString());
 //			Console.WriteLine(match.ToString());
@@ -71,7 +71,7 @@ namespace TennisTests
 		[InlineData("L Steve 62 64 6:00 pm 8/29/2014")]
 		public void SpaceDelimitedRowCannotHaveSpacesInTimeValue(string input)
 		{
-			Assert.Throws<FormatException>(() => MatchParser.parseMatch(input));
+			Assert.Throws<FormatException>(() => DynamicMatchParser.parseMatch(input));
 		}
 	}
 }

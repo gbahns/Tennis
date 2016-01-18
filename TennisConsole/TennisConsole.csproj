@@ -48,12 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventFinder.cs" />
     <Compile Include="FizzBuzz.cs" />
     <Compile Include="IGenericReader.cs" />
     <Compile Include="MatchLoader.cs" />
     <Compile Include="MatchPrinter.cs" />
     <Compile Include="MyFileReader.cs" />
     <Compile Include="MyStringReader.cs" />
+    <Compile Include="PlayerFinder.cs" />
     <Compile Include="TennisConsole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

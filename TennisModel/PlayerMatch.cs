@@ -23,6 +23,8 @@ namespace TennisModel
 		public DateTime Date { get; set; }
 		public int EventID { get; set; }
 		public string EventName { get; set; }
+		public int LocationID { get; set; }
+		public string LocationName { get; set; }
 		public int ClassID { get; set; }
 		public string ClassName { get; set; }
 		public string Result { get; set; }
@@ -31,6 +33,7 @@ namespace TennisModel
 		public string OpponentName { get; set; }
 		public MatchScore Score { get; set; }
 		public bool Defaulted { get; set; }
+		public string Comments { get; set; }
 
 		#region Old Cruft
 		//[DisplayName("Date")]
