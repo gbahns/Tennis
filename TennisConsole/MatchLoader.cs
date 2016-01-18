@@ -114,6 +114,7 @@ L Suraj 63 64 3/11/2015 6am
 ";*/
 
 		static TennisDb db = new TennisDb();
+		static TennisDb playersDb = new TennisDb();
 
 		static Dictionary<string, string> PlayerMap = new Dictionary<string, string>()
 		{
@@ -130,12 +131,16 @@ L Suraj 63 64 3/11/2015 6am
 			{"GARTH", "GARTH BRANDWEIN"},
 			{"ASHISH", "ASHISH BANGAR"},
 			{"JESSE", "JESSE BONDOC"},
+			{"STEVE MOORE", "STEVE MOORE (QC)"},
+			{"TUCK", "TUCK STITES (QC)"},
+			{"POTTNER", "MIKE POTTNER"},
 			{"? (harpers)", "player unknown"},
 		};
 
 		static string FindPlayers(string name)
 		{
 			name = name.ToUpper();
+
 
 			if (PlayerMap.ContainsKey(name))
 				name = PlayerMap[name];
@@ -165,6 +170,15 @@ L Suraj 63 64 3/11/2015 6am
 
 		static Player FindPlayer(string name)
 		{
+			if (name.StartsWith("*"))
+			{
+				Player player = new Player();
+				player.FullName = name;
+				playersDb.Players.Add(player);
+				playersDb.SaveChanges();
+				return player;
+			}
+
 			name = name.ToUpper();
 
 			if (PlayerMap.ContainsKey(name))
@@ -215,7 +229,7 @@ L Suraj 63 64 3/11/2015 6am
 			return match;
 		}
 
-        static string matchFormat = "{0,-23} {1,-3} {2,-26} {3}{4}";
+        static string matchFormat = "{0,-23} {1,-3} {2,-26} {3,-25} {4,-10}";
 
 		public static PlayerMatch CreateMatchFromString(string s, string[] columns)
 		{
@@ -236,9 +250,9 @@ L Suraj 63 64 3/11/2015 6am
             Console.WriteLine(matchFormat,
                 match.Date,
                 match.Result,
-                string.Format("{0,-4}{1}", opponent.Id, opponent.FullName),
-                match.Score.ToString(true),
-                match.Defaulted ? " default" : ""
+                string.Format("{0,3} {1}", opponent.Id != 0 ? opponent.Id.ToString() : "---", opponent.FullName),
+                match.Score.ToString(true) + (match.Defaulted ? " default" : ""),
+				string.Format("{0,3} {1}", match.EventID != 0 ? match.EventID.ToString() : "---", match.EventName)
                 );
 
             return match;
@@ -254,7 +268,7 @@ L Suraj 63 64 3/11/2015 6am
                 "W/L",
                 "Opponent",
                 "Score",
-                "");
+				"Event");
 
             return s.Split(',');
 		}
