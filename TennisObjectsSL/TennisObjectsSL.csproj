@@ -22,7 +22,7 @@
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <FileUpgradeFlags>40</FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <UpgradeBackupLocation>C:\Dev\Tennis\Backup\TennisObjectsSL\</UpgradeBackupLocation>
+    <UpgradeBackupLocation>C:\Dev\Tennis\Backup1\</UpgradeBackupLocation>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>

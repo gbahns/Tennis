@@ -20,8 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bahns.Web.UI.WebControls", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisObjects", "TennisObjects\TennisObjects.csproj", "{1568009B-CFDC-46A6-B3FD-A9D46F6DDFB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bahns.Util", "..\..\Libs\Library\Sfg.Util\Bahns.Util.csproj", "{5F88912C-E25A-499F-92BF-B68A47349B35}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TennisDB", "TennisDB\TennisDB.sqlproj", "{F10F591D-3847-401C-967C-3768B3545EA2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisSL", "TennisSL\TennisSL.csproj", "{FC7BFD91-5F98-4140-B871-13DCB3E640C7}"
@@ -49,6 +47,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisLogic", "TennisLogic\TennisLogic.csproj", "{11A45BB8-555E-4683-91DC-88C7F7CC5F4A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TennisConsole", "TennisConsole\TennisConsole.csproj", "{E71D1729-BD3F-461F-B37B-69271FEC13F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bahns.Util", "Bahns.Util\Bahns.Util.csproj", "{5F88912C-E25A-499F-92BF-B68A47349B35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
