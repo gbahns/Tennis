@@ -177,11 +177,11 @@ L Suraj 63 64 3/11/2015 6am
 
 			if (players.Count() == 0)
 			{
-				Console.Write(String.Format("\nPlayer '{0}' not found.  Create new player (y/n)? ", name));
-				var key = Console.ReadKey();
-				Console.WriteLine();
-				if (key.KeyChar != 'y')
-					throw new ApplicationException(String.Format("Player '{0}' not found.", name));
+				//Console.Write(String.Format("\nPlayer '{0}' not found.  Create new player (y/n)? ", name));
+				//var key = Console.ReadKey();
+				//Console.WriteLine();
+				//if (key.KeyChar != 'y')
+				//	throw new ApplicationException(String.Format("Player '{0}' not found.", name));
 
 				Player player = new Player();
 				player.FullName = name;
@@ -215,28 +215,48 @@ L Suraj 63 64 3/11/2015 6am
 			return match;
 		}
 
+        static string matchFormat = "{0,-23} {1,-3} {2,-26} {3}{4}";
+
 		public static PlayerMatch CreateMatchFromString(string s, string[] columns)
 		{
 			if (columns == null)
 				return CreateMatchFromString(s);
 
-			Console.Write(s.Replace('\t', ' ').PadRight(45));
+			Console.Write(s.Replace('\t', ' ').PadRight(65));
 			var match = MatchParser.parseMatch(s, columns);
 			match.EventID = 1;
 			match.PlayerID = 1;
-			Console.Write(match.ToString().PadRight(63));
+            //Console.Write(match.ToString().PadRight(63));
+            Console.Write("");
 
-			var opponent = FindPlayer(match.OpponentName);
+            var opponent = FindPlayer(match.OpponentName);
 			match.OpponentID = opponent.Id;
 			match.OpponentName = opponent.FullName;
-			Console.WriteLine(opponent.Id + ":" + opponent.FullName);
-			return match;
+            //Console.WriteLine(opponent.Id + ":" + opponent.FullName);
+            Console.WriteLine(matchFormat,
+                match.Date,
+                match.Result,
+                string.Format("{0,-4}{1}", opponent.Id, opponent.FullName),
+                match.Score.ToString(true),
+                match.Defaulted ? " default" : ""
+                );
+
+            return match;
 		}
 
 
 		public static string[] ParseHeaderRow(string s)
 		{
-			return s.Split(',');
+            Console.Write(s.PadRight(65));
+
+            Console.WriteLine(matchFormat,
+                "Date",
+                "W/L",
+                "Opponent",
+                "Score",
+                "");
+
+            return s.Split(',');
 		}
 
 		public static void LoadMatches(IGenericReader reader)
@@ -263,17 +283,17 @@ L Suraj 63 64 3/11/2015 6am
 
 				Console.WriteLine();
 
-				foreach (var match in matchList)
-				{
-					Console.Write(match.ToString().PadRight(63));
+				//foreach (var match in matchList)
+				//{
+				//	Console.Write(match.ToString().PadRight(63));
 
-					var matchToSave = match.ToMatch();
+				//	var matchToSave = match.ToMatch();
 
-					Console.WriteLine(matchToSave.EventID + ": " + matchToSave);
+				//	Console.WriteLine(matchToSave.EventID + ": " + matchToSave);
 
-					var matchRaw = matchToSave.ToMatchRaw();
-					db.Matches.Add(matchRaw);
-				}
+				//	var matchRaw = matchToSave.ToMatchRaw();
+				//	db.Matches.Add(matchRaw);
+				//}
 
 				//Console.WriteLine();
 				//Console.Write("Saving new matches...");

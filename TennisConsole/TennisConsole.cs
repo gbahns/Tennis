@@ -16,7 +16,7 @@ namespace TennisConsole
 		{
 			try
 			{
-				MatchLoader.LoadMatchesFromFile(@"D:\Dev\Apps\Tennis\TennisConsole\Matches-2016-01-02.csv");
+				MatchLoader.LoadMatchesFromFile(@"..\..\Matches-2016-01-02.csv");
 				//MatchPrinter.PrintMatches();
 				//FizzBuzz.Execute();
 			}
