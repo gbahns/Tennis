@@ -15,11 +15,13 @@ namespace TennisModel
 
 		public int ID { get; set; }
 		public int EventID { get; set; }
+		public int LocationID { get; set; }
 		public DateTime Date { get; set; }
 		public int WinnerID { get; set; }
 		public int LoserID { get; set; }
 		public MatchScore Score { get; set; }
 		public bool Defaulted { get; set; }
+		public string Comments { get; set; }
 
 		#region String Conversions
 		private string ToString(bool includeTiebreaks)
@@ -37,6 +39,8 @@ namespace TennisModel
 			return ToString(false);
 		}
 		#endregion
+
+
 
 	}
 }

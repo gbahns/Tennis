@@ -72,6 +72,7 @@ namespace TennisConsole
 			player.HomeLocationId = location.ID;
 			playersDb.Players.Add(player);
 			playersDb.SaveChanges();
+			Console.WriteLine("Player added: {0}", player.FullName);
 			return player;
 		}
 

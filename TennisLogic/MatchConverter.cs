@@ -34,11 +34,13 @@ namespace TennisLogic
 			var match = new Match();
 			match.ID = source.ID;
 			match.EventID = source.EventID;
+			match.LocationID = source.LocationID;
 			match.Date = source.Date;
 			match.WinnerID = source.Result == "W" ? source.PlayerID : source.OpponentID;
 			match.LoserID = source.Result == "L" ? source.PlayerID : source.OpponentID; ;
 			match.Score.Sets.AddRange(source.Score.Sets);
 			match.Defaulted = source.Defaulted;
+			match.Comments = source.Comments;
 
 			//playerMatch.EventName = match.ev
 			//TennisEvent TennisEvent = Match.Events.Find(Match.EventID);
@@ -74,10 +76,12 @@ namespace TennisLogic
 			var match = new MatchRaw();
 			match.ID = source.ID;
 			match.EventID = source.EventID;
+			match.LocationID = source.LocationID;
 			match.Date = source.Date;
 			match.WinnerID = source.WinnerID;
 			match.LoserID = source.LoserID;
 			match.Defaulted = source.Defaulted;
+			match.Comments = source.Comments;
 
 			match.WinnerSet1 = source.Score.Sets[0].Games.W;
 			match.LoserSet1 = source.Score.Sets[0].Games.L;
