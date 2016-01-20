@@ -106,5 +106,15 @@ namespace TennisLogic
 			var match = new PlayerMatch();
 			return match;
 		}
+
+		public static PlayerMatch CreateMatchFromString(string s)
+		{
+			Console.Write(s.Replace('\t', ' ').PadRight(45));
+			var match = DynamicMatchParser.parseMatch(s);
+			match.EventID = 1;
+			match.PlayerID = 1;
+			Console.Write(match.ToString().PadRight(63));
+			return match;
+		}
 	}
 }

@@ -124,63 +124,22 @@ L Suraj 63 64 3/11/2015 6am
 			}
 		}
 
-		public static PlayerMatch CreateMatchFromString(string s)
-		{
-			Console.Write(s.Replace('\t', ' ').PadRight(45));
-			var match = DynamicMatchParser.parseMatch(s);
-			match.EventID = 1;
-			match.PlayerID = 1;
-			Console.Write(match.ToString().PadRight(63));
-
-			var opponent = PlayerFinder.FindPlayer(match.OpponentName);
-			match.OpponentID = opponent.Id;
-			match.OpponentName = opponent.FullName;
-			Console.WriteLine(opponent.Id + ":" + opponent.FullName);
-			return match;
-		}
-
-        static string matchFormat = "{0,-23} {1,-3} {2,-26} {3,-25} {4,-10}";
-
-		public static PlayerMatch CreateMatchFromString(string s, string[] columns)
-		{
-			if (columns == null)
-				return CreateMatchFromString(s);
-
-			Console.Write(s.Replace('\t', ' ').PadRight(65));
-			var match = StructuredMatchParser.parseMatch(s, columns);
-			match.EventID = 1;
-			match.PlayerID = 1;
-            //Console.Write(match.ToString().PadRight(63));
-            Console.Write("");
-
-            var opponent = PlayerFinder.FindPlayer(match.OpponentName);
-			match.OpponentID = opponent.Id;
-			match.OpponentName = opponent.FullName;
-            //Console.WriteLine(opponent.Id + ":" + opponent.FullName);
-            Console.WriteLine(matchFormat,
-                match.Date,
-                match.Result,
-                string.Format("{0,3} {1}", opponent.Id != 0 ? opponent.Id.ToString() : "---", opponent.FullName),
-                match.Score.ToString(true) + (match.Defaulted ? " default" : ""),
-				string.Format("{0,3} {1}", match.EventID != 0 ? match.EventID.ToString() : "---", match.EventName)
-                );
-
-            return match;
-		}
-
+		static string matchFormat = "{0,-102} {1,-21} {2,-3} {3,-22} {4,-20} {5,-25} {6,-28} {7}";
 
 		public static string[] ParseHeaderRow(string s)
 		{
-            Console.Write(s.PadRight(65));
 
-            Console.WriteLine(matchFormat,
-                "Date",
-                "W/L",
-                "Opponent",
-                "Score",
-				"Event");
+			Console.WriteLine(matchFormat,
+				s,
+				"Date",
+				"W/L",
+				"Opponent",
+				"Home",
+				"Score",
+				"Event",
+				"Location");
 
-            return s.Split(',');
+			return s.Split(',');
 		}
 
 		public static void LoadMatches(IGenericReader reader)
@@ -202,7 +161,43 @@ L Suraj 63 64 3/11/2015 6am
 					if (s.Contains("Result"))
 						columns = ParseHeaderRow(s);
 					else
-						matchList.Add(CreateMatchFromString(s, columns));
+					{
+						var values = StructuredMatchParser.parseRow(s, columns);
+						var match = new PlayerMatch();
+
+						var _event = EventFinder.FindEvent(values.Event);
+						match.EventID = _event.ID;
+						match.EventName = _event.Name;
+
+						var location = LocationFinder.FindLocation(values.Location);
+						match.LocationID = location.ID;
+						match.LocationName = location.Name;
+
+						Location opponentHomeClub = LocationFinder.FindLocation(values.Club);
+						Player opponent = PlayerFinder.AddOrFindPlayer(values.Opponent, opponentHomeClub);
+						match.OpponentID = opponent.Id;
+						match.OpponentName = opponent.FullName;
+						opponentHomeClub = LocationFinder.GetLocationById(opponent.HomeLocationId);
+
+						StructuredMatchParser.setResult(match, values.Result);
+						StructuredMatchParser.setScore(match, values.Score);
+						match.Date = DateTime.Parse(values.Date) + DateTime.Parse(values.Time).TimeOfDay;
+						match.Comments = values.Comments;
+
+						//Console.WriteLine(opponent.Id + ":" + opponent.FullName);
+						Console.WriteLine(matchFormat,
+							s,
+							match.Date.ToString("yyyy-MM-dd hh:mm tt"),
+							match.Result,
+							(opponent.Id != 0 ? opponent.Id.ToString("D3") : "---") + " " + opponent.FullName,
+							opponentHomeClub.ID.ToString("D3") + " " + opponentHomeClub.Name,
+							match.Score.ToString(true) + (match.Defaulted ? " default" : ""),
+							(match.EventID != 0 ? match.EventID.ToString("D3") : "---") + " " + match.EventName,
+							(match.LocationID != 0 ? match.LocationID.ToString("D3") : "---") + " " + match.LocationName
+							);
+
+						matchList.Add(match);
+					}
 				}
 
 				Console.WriteLine();

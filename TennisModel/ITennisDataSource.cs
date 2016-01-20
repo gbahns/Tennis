@@ -9,8 +9,9 @@ namespace TennisModel
 {
 	public interface ITennisDataSource
 	{
-		IQueryable<TennisEvent> TennisEvents { get; }
+		IQueryable<TennisEvent> Events { get; }
 		IQueryable<Player> Players { get; }
 		IQueryable<MatchRaw> Matches { get; }
+		IQueryable<Location> Locations { get; }
 	}
 }

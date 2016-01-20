@@ -13,12 +13,13 @@ namespace TennisData
 		}
 
 		public DbSet<Player> Players { get; set; }
-		public DbSet<TennisEvent> TennisEvents { get; set; }
+		public DbSet<TennisEvent> Events { get; set; }
 		public DbSet<MatchRaw> Matches { get; set; }
+		public DbSet<Location> Locations { get; set; }
 
-		IQueryable<TennisEvent> ITennisDataSource.TennisEvents
+		IQueryable<TennisEvent> ITennisDataSource.Events
 		{
-			get { return TennisEvents; }
+			get { return Events; }
 		}
 
 		IQueryable<Player> ITennisDataSource.Players
@@ -29,6 +30,11 @@ namespace TennisData
 		IQueryable<MatchRaw> ITennisDataSource.Matches
 		{
 			get { return Matches; }
+		}
+
+		IQueryable<Location> ITennisDataSource.Locations
+		{
+			get { return Locations; }
 		}
 	}
 }

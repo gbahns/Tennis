@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ITennisDataSource.cs" />
+    <Compile Include="Location.cs" />
     <Compile Include="Match.cs" />
     <Compile Include="MatchRaw.cs" />
     <Compile Include="MatchScore.cs" />

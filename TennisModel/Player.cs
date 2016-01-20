@@ -18,6 +18,7 @@ namespace TennisModel
 		public int Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
+		public int HomeLocationId { get; set; }
 
 		[NotMapped]
 		public string FullName

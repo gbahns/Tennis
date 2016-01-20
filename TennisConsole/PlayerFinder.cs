@@ -65,17 +65,18 @@ namespace TennisConsole
 			return sb.ToString();
 		}
 
+		public static Player AddPlayer(string name, Location location)
+		{
+			Player player = new Player();
+			player.FullName = name;
+			player.HomeLocationId = location.ID;
+			playersDb.Players.Add(player);
+			playersDb.SaveChanges();
+			return player;
+		}
+
 		public static Player FindPlayer(string name)
 		{
-			if (name.StartsWith("*"))
-			{
-				Player player = new Player();
-				player.FullName = name;
-				playersDb.Players.Add(player);
-				playersDb.SaveChanges();
-				return player;
-			}
-
 			name = name.ToUpper();
 
 			if (PlayerMap.ContainsKey(name))
@@ -96,11 +97,19 @@ namespace TennisConsole
 
 				Player player = new Player();
 				player.FullName = name;
-				db.Players.Add(player);
+				//db.Players.Add(player);
 				return player;
 			}
 
 			return players.First();
+		}
+
+		public static Player AddOrFindPlayer(string name, Location location)
+		{
+			if (name.StartsWith("*"))
+				return PlayerFinder.AddPlayer(name.Substring(1), location);
+			else
+				return PlayerFinder.FindPlayer(name);
 		}
 	}
 }
