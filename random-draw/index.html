@@ -26,16 +26,31 @@
         if (/messages? and calls? are end-to-end/i.test(l)) return false;
         return true;
       });
-      const tokens = lines.join(", ").replace(/^\s*\d+[\.\)]\s*/gm, " ").split(/[\n,;]+/).map(t => t.trim()).filter(Boolean);
+      const allText = lines.join("\n")
+        .replace(/\([^)]*\)/g, " ")                    // strip parentheticals like "(gotta leave at 9:15)"
+        .replace(/^\s*\d+[\.\)]\s*/gm, " ")
+        .replace(/[\n,;]+/g, ",")
+        .replace(/\s+-\s+/g, ",")
+        .replace(/(?<=[a-zA-Z])\s+-(?=[a-zA-Z\s])/g, ",")
+        .split(",")
+        .map(t => t.replace(/^[\s\-\•\*\–\—\·\▪\▸\►\○\●\+]+/, "").trim())
+        .filter(Boolean);
+
+      const tokens = allText;
       const names = [];
+      const skipped = [];
       for (const token of tokens) {
-        if (token.length > 20 || /\d/.test(token) || /\s/.test(token) || STOPWORDS.test(token)) continue;
-        if (/^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'-]{1,19}$/.test(token)) {
-          const name = token.charAt(0).toUpperCase() + token.slice(1).toLowerCase();
+        if (!token) continue;
+        if (token.length > 20 || /\d/.test(token) || STOPWORDS.test(token)) continue;
+        if (/\s/.test(token)) continue;
+        if (/^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'-]{0,19}$/.test(token)) {
+          const name = token.charAt(0).toUpperCase() + token.slice(1);
           if (!names.includes(name)) names.push(name);
+        } else if (token.length > 0 && !/^[\W_]+$/.test(token)) {
+          skipped.push(token);
         }
       }
-      return names;
+      return { names, skipped };
     }
 
     function shuffle(arr) {
@@ -276,7 +291,7 @@
       const cc  = Math.floor(tc / 2);
       const hasSingles = tc % 2 === 1;
       const hasSitout  = pc % 2 === 1;
-      const canDraw = pc >= 2 || parseNames(pasteText).length >= 2;
+      const canDraw = pc >= 2 || parseNames(pasteText).names.length >= 2;
 
       const [themeOpen, setThemeOpen] = useState(false);
       useEffect(() => {
@@ -298,9 +313,14 @@
       }
 
       function doImport(text) {
-        const names = parseNames(text);
+        const { names, skipped } = parseNames(text);
         if (names.length < 2) { setParseError("Couldn't find enough names — try editing below."); return; }
-        setPlayers(names); setPasteText(""); setParseError("");
+        if (skipped.length > 0) {
+          setParseError(`Heads up: couldn't parse "${skipped.join('", "')}" — remove or fix and reimport if needed.`);
+        } else {
+          setParseError("");
+        }
+        setPlayers(names); setPasteText("");
         triggerDraw(names);
       }
 
