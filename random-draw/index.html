@@ -18,7 +18,9 @@
     const { useState, useEffect, useRef } = React;
 
     function parseNames(raw) {
-      const STOPWORDS = /^(final|list|for|see|you|in|the|and|of|at|tomorrow|morning|tonight|ok|hi|hey|soon|next|out|with|from)$/i;
+      const STOPWORDS = /^(final|list|for|see|you|in|the|and|of|at|tomorrow|morning|tonight|ok|hi|hey|soon|next|out|with|from|gotta|leave|am|pm)$/i;
+
+      // Strip metadata lines
       const lines = raw.split(/\n/).map(l => l.trim()).filter(l => {
         if (/^\d{1,2}\/\d{1,2}\/\d{2,4}/.test(l)) return false;
         if (/^\[?\d{1,2}:\d{2}/.test(l)) return false;
@@ -26,30 +28,53 @@
         if (/messages? and calls? are end-to-end/i.test(l)) return false;
         return true;
       });
-      const allText = lines.join("\n")
-        .replace(/\([^)]*\)/g, " ")                    // strip parentheticals like "(gotta leave at 9:15)"
-        .replace(/^\s*\d+[\.\)]\s*/gm, " ")
-        .replace(/[\n,;]+/g, ",")
-        .replace(/\s+-\s+/g, ",")
-        .replace(/(?<=[a-zA-Z])\s+-(?=[a-zA-Z\s])/g, ",")
-        .split(",")
-        .map(t => t.replace(/^[\s\-\•\*\–\—\·\▪\▸\►\○\●\+]+/, "").trim())
-        .filter(Boolean);
 
-      const tokens = allText;
+      const cleaned = lines.join("\n")
+        .replace(/\([^)]*\)/g, " ")              // strip parentheticals
+        .replace(/^\s*\d+[\.\)]\s*/gm, " ");     // strip numbered lists
+
+      // Detect whether explicit delimiters are present
+      const hasExplicit = /[,;\n]/.test(cleaned) ||
+        /\s+[-\•\*\–\—\·\▪\▸\►\○\●]\s*[A-Za-z]/m.test(cleaned) || // inline bullet "word -Name"
+        /^[\s]*[-\•\*\–\—\·\▪\▸\►\○\●]/m.test(cleaned);           // line-starting bullet
+
+      let tokens;
+      if (hasExplicit) {
+        // Split on explicit delimiters; names may contain spaces
+        tokens = cleaned
+          .replace(/[\n,;]+/g, ",")
+          .replace(/\s+[-\•\*\–\—\·\▪\▸\►\○\●]+\s*/g, ",")        // inline " -Name" → ","
+          .split(",")
+          .map(t => t.replace(/^[\s\-\•\*\–\—\·\▪\▸\►\○\●]+/, "").trim())
+          .filter(Boolean);
+      } else {
+        // No explicit delimiters — split on whitespace, single tokens only
+        tokens = cleaned.trim().split(/\s+/).filter(Boolean);
+      }
+
       const names = [];
       const skipped = [];
+
       for (const token of tokens) {
-        if (!token) continue;
-        if (token.length > 20 || /\d/.test(token) || STOPWORDS.test(token)) continue;
-        if (/\s/.test(token)) continue;
-        if (/^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'-]{0,19}$/.test(token)) {
-          const name = token.charAt(0).toUpperCase() + token.slice(1);
-          if (!names.includes(name)) names.push(name);
-        } else if (token.length > 0 && !/^[\W_]+$/.test(token)) {
-          skipped.push(token);
+        if (!token || token.length > 40) continue;
+        if (/\d/.test(token)) continue;  // skip anything with digits
+
+        // Split multi-word token into words, filter stopwords, reassemble
+        const words = token.split(/\s+/).filter(w => w.length > 0 && !STOPWORDS.test(w));
+        if (words.length === 0) continue;
+
+        // Each word must look like a name part (letters, hyphens, apostrophes)
+        const allValid = words.every(w => /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ''-]*$/.test(w));
+        if (!allValid) {
+          if (words.some(w => /^[A-Za-zÀ-ÿ]/.test(w))) skipped.push(token);
+          continue;
         }
+
+        // Title-case each word
+        const name = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+        if (!names.includes(name)) names.push(name);
       }
+
       return { names, skipped };
     }
 
