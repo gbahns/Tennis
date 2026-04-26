@@ -48,48 +48,71 @@
         tokens = cleaned.trim().split(/\s+/).filter(Boolean);
       }
 
+      // Parse a single name token — strips trailing *, trailing team number (1-9)
+      // Returns { name, strong, teamNum } or null
       function parseName(str) {
-        // Strip trailing * before parsing, return {name, strong}
-        const strong = /\*+$/.test(str.trim());
-        const clean = str.trim().replace(/\*+$/, "").trim();
-        const words = clean.split(/\s+/).filter(w => w.length > 0 && !STOPWORDS.test(w));
+        let s = str.trim();
+        const strong = /\*+$/.test(s);
+        s = s.replace(/\*+$/, "").trim();
+        // Extract trailing single digit as team number (e.g. "Steve2" → name="Steve", teamNum=2)
+        const teamNumMatch = s.match(/^([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' -]*)(\d)$/);
+        let teamNum = null;
+        if (teamNumMatch) {
+          s = teamNumMatch[1].trim();
+          teamNum = teamNumMatch[2];
+        }
+        const words = s.split(/\s+/).filter(w => w.length > 0 && !STOPWORDS.test(w));
         if (words.length === 0) return null;
         if (!words.every(w => /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ''-]*$/.test(w))) return null;
         const name = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-        return { name, strong };
+        return { name, strong, teamNum };
       }
 
       const names = [];
-      const strong = new Set(); // names tagged as strong
+      const strong = new Set();
       const pairs = [];
       const skipped = [];
       let pairNext = null;
+      const teamNumGroups = {}; // teamNum → first player name
+
+      function addPlayer(r) {
+        if (!names.includes(r.name)) names.push(r.name);
+        if (r.strong) strong.add(r.name);
+        // Handle team number pairing
+        if (r.teamNum) {
+          if (teamNumGroups[r.teamNum]) {
+            pairs.push([teamNumGroups[r.teamNum], r.name]);
+            delete teamNumGroups[r.teamNum];
+          } else {
+            teamNumGroups[r.teamNum] = r.name;
+          }
+        }
+      }
 
       for (const token of tokens) {
         if (!token || token.length > 80) continue;
-        if (/\d/.test(token)) continue;
+        // Skip pure-number tokens and date-like patterns
+        if (/^\d+$/.test(token)) continue;
+        if (/^\d{1,2}(am|pm)$/i.test(token)) continue;
 
         if (/&/.test(token)) {
           const parts = token.split("&").map(p => p.trim()).filter(Boolean);
           if (parts.length === 2) {
             const ra = parseName(parts[0]), rb = parseName(parts[1]);
             if (ra && rb) {
-              if (!names.includes(ra.name)) names.push(ra.name);
-              if (!names.includes(rb.name)) names.push(rb.name);
-              if (ra.strong) strong.add(ra.name);
-              if (rb.strong) strong.add(rb.name);
-              pairs.push([ra.name, rb.name]);
+              addPlayer(ra); addPlayer(rb);
+              if (!pairs.some(([a,b]) => (a===ra.name&&b===rb.name)||(a===rb.name&&b===ra.name)))
+                pairs.push([ra.name, rb.name]);
             } else {
-              if (ra && !names.includes(ra.name)) { names.push(ra.name); if (ra.strong) strong.add(ra.name); }
-              if (rb && !names.includes(rb.name)) { names.push(rb.name); if (rb.strong) strong.add(rb.name); }
+              if (ra) addPlayer(ra);
+              if (rb) addPlayer(rb);
             }
             pairNext = null;
             continue;
           } else if (parts.length === 1) {
             const r = parseName(parts[0]);
             if (r) {
-              if (!names.includes(r.name)) names.push(r.name);
-              if (r.strong) strong.add(r.name);
+              addPlayer(r);
               if (token.trim().endsWith("&") || token.trim().startsWith("&")) pairNext = r.name;
             }
             continue;
@@ -100,10 +123,10 @@
 
         const r = parseName(token);
         if (r) {
-          if (!names.includes(r.name)) names.push(r.name);
-          if (r.strong) strong.add(r.name);
+          addPlayer(r);
           if (pairNext && pairNext !== r.name) {
-            pairs.push([pairNext, r.name]);
+            if (!pairs.some(([a,b]) => (a===pairNext&&b===r.name)||(a===r.name&&b===pairNext)))
+              pairs.push([pairNext, r.name]);
             pairNext = null;
           } else {
             pairNext = null;
