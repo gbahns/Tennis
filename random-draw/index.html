@@ -563,7 +563,7 @@
       const [settings, setSettings] = useState(() => {
         try {
           const saved = JSON.parse(localStorage.getItem("matchupSettings") || "{}");
-          return { autoSubmitOnPaste: true, ...saved };
+          return { autoSubmitOnPaste: true, ignoreFirstLine: false, autoCopyOnDraw: false, ...saved };
         } catch { return { autoSubmitOnPaste: true }; }
       });
 
@@ -587,11 +587,30 @@
 
       function triggerDraw(namesToUse, pairsToUse, strongToUse, antisToUse) {
         setBusy(true); setEditMode(false);
-        setTimeout(() => { setDraw(buildDraw(namesToUse, mode, pairsToUse || pairs, strongToUse || strong, antisToUse || antis)); setDrawKey(k => k + 1); setBusy(false); }, 300);
+        setTimeout(() => {
+          const result = buildDraw(namesToUse, mode, pairsToUse || pairs, strongToUse || strong, antisToUse || antis);
+          setDraw(result); setDrawKey(k => k + 1); setBusy(false);
+          if (settings.autoCopyOnDraw) {
+            const text = result.map(court => {
+              if (court.type === "doubles") return `${court.label}:\n${court.team1.join(" & ")}\n${court.team2.join(" & ")}`;
+              if (court.type === "singles") { const p1 = court.team1[0]; const p2 = court.team2 ? court.team2[0] : court.team1[1]; return `${court.label}:\n${p1}\n${p2||""}`; }
+              if (court.type === "sitout") return `Sitting Out:\n${court.team1.join(" & ")}`;
+              return "";
+            }).filter(Boolean).join("\n\n");
+            navigator.clipboard.writeText(text).catch(() => {
+              const el = document.createElement("textarea"); el.value = text;
+              document.body.appendChild(el); el.select(); document.execCommand("copy"); document.body.removeChild(el);
+            });
+            setCopied(true); setTimeout(() => setCopied(false), 2000);
+          }
+        }, 300);
       }
 
       function doImport(text) {
-        const { names, strong: newStrong, pairs: newPairs, antis: newAntis, skipped } = parseNames(text);
+        let t = text;
+        const lines = t.split("\n");
+        if (settings.ignoreFirstLine && lines.length > 1) t = lines.slice(1).join("\n");
+        const { names, strong: newStrong, pairs: newPairs, antis: newAntis, skipped } = parseNames(t);
         if (names.length < 2) { setParseError("Couldn't find enough names — try editing below."); return; }
         if (skipped.length > 0) {
           setParseError(`Heads up: couldn't parse "${skipped.join('", "')}" — remove or fix and reimport if needed.`);
@@ -738,7 +757,7 @@
                     style={{ background:"transparent", border:"none", color:T.headerColor, fontSize:"16px", cursor:"pointer", opacity:0.7, lineHeight:1, padding:"0" }}>✕</button>
                 </div>
                 <div style={{ padding:"4px 0" }}>
-                  <label style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 16px", cursor:"pointer", gap:"12px" }}
+                  <label style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 16px", cursor:"pointer", gap:"12px", borderBottom:`1px solid ${popupBorder}` }}
                     onClick={() => updateSetting("autoSubmitOnPaste", !settings.autoSubmitOnPaste)}>
                     <div>
                       <div style={{ fontSize:"13px", fontWeight:"600", color:popupText, fontFamily:F }}>Auto-draw on paste</div>
@@ -746,6 +765,26 @@
                     </div>
                     <div style={{ flexShrink:0, width:"40px", height:"22px", borderRadius:"11px", background: settings.autoSubmitOnPaste ? T.accentBar : "#999", position:"relative", transition:"background 0.2s" }}>
                       <div style={{ position:"absolute", top:"3px", left: settings.autoSubmitOnPaste ? "21px" : "3px", width:"16px", height:"16px", borderRadius:"50%", background:"white", transition:"left 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.2)" }}/>
+                    </div>
+                  </label>
+                  <label style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 16px", cursor:"pointer", gap:"12px" }}
+                    onClick={() => updateSetting("ignoreFirstLine", !settings.ignoreFirstLine)}>
+                    <div>
+                      <div style={{ fontSize:"13px", fontWeight:"600", color:popupText, fontFamily:F }}>Ignore first line</div>
+                      <div style={{ fontSize:"11px", color:popupSub, fontFamily:F, marginTop:"2px" }}>Skip the first line when parsing (e.g. a header like "Final list of 8@6am")</div>
+                    </div>
+                    <div style={{ flexShrink:0, width:"40px", height:"22px", borderRadius:"11px", background: settings.ignoreFirstLine ? T.accentBar : "#999", position:"relative", transition:"background 0.2s" }}>
+                      <div style={{ position:"absolute", top:"3px", left: settings.ignoreFirstLine ? "21px" : "3px", width:"16px", height:"16px", borderRadius:"50%", background:"white", transition:"left 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.2)" }}/>
+                    </div>
+                  </label>
+                  <label style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 16px", cursor:"pointer", gap:"12px", borderTop:`1px solid ${popupBorder}` }}
+                    onClick={() => updateSetting("autoCopyOnDraw", !settings.autoCopyOnDraw)}>
+                    <div>
+                      <div style={{ fontSize:"13px", fontWeight:"600", color:popupText, fontFamily:F }}>Auto-copy on draw</div>
+                      <div style={{ fontSize:"11px", color:popupSub, fontFamily:F, marginTop:"2px" }}>Automatically copy matchups to clipboard after each draw</div>
+                    </div>
+                    <div style={{ flexShrink:0, width:"40px", height:"22px", borderRadius:"11px", background: settings.autoCopyOnDraw ? T.accentBar : "#999", position:"relative", transition:"background 0.2s" }}>
+                      <div style={{ position:"absolute", top:"3px", left: settings.autoCopyOnDraw ? "21px" : "3px", width:"16px", height:"16px", borderRadius:"50%", background:"white", transition:"left 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.2)" }}/>
                     </div>
                   </label>
                 </div>
