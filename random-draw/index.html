@@ -721,42 +721,52 @@
           </div>{/* end header */}
 
           {/* Settings popup */}
-          {showSettings && (
+          {showSettings && (() => {
+            const isDark = ["scoreboard","dark","chalk","nightmatch","neon","usopen","ausopen","cincinnati"].includes(themeKey);
+            const popupBg = isDark ? "#1a1a1a" : "#ffffff";
+            const popupText = isDark ? "#f0f0f0" : "#1a1a1a";
+            const popupSub = isDark ? "#aaaaaa" : "#555555";
+            const popupBorder = isDark ? "#333333" : "#e0e0e0";
+            return (
             <div style={{ position:"fixed", inset:0, zIndex:200, display:"flex", alignItems:"flex-start", justifyContent:"flex-end", padding:"56px 12px 0" }}
               onClick={() => setShowSettings(false)}>
               <div onClick={e => e.stopPropagation()}
-                style={{ background:T.panelBg||"white", border:`1px solid ${T.footerBorder||"#e0e0e0"}`, borderRadius:"8px", boxShadow:"0 8px 32px rgba(0,0,0,0.2)", width:"280px", overflow:"hidden" }}>
-                {/* Header */}
+                style={{ background:popupBg, border:`1px solid ${popupBorder}`, borderRadius:"8px", boxShadow:"0 8px 32px rgba(0,0,0,0.35)", width:"280px", overflow:"hidden" }}>
                 <div style={{ background:T.headerBg, padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
                   <span style={{ color:T.headerColor, fontSize:"13px", fontWeight:"700", fontFamily:F, letterSpacing:"0.5px" }}>⚙ Settings</span>
                   <button onClick={() => setShowSettings(false)}
                     style={{ background:"transparent", border:"none", color:T.headerColor, fontSize:"16px", cursor:"pointer", opacity:0.7, lineHeight:1, padding:"0" }}>✕</button>
                 </div>
-                {/* Settings list */}
                 <div style={{ padding:"4px 0" }}>
                   <label style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 16px", cursor:"pointer", gap:"12px" }}
                     onClick={() => updateSetting("autoSubmitOnPaste", !settings.autoSubmitOnPaste)}>
                     <div>
-                      <div style={{ fontSize:"13px", fontWeight:"600", color:T.titleColor, fontFamily:F }}>Auto-draw on paste</div>
-                      <div style={{ fontSize:"11px", color:T.footerText, fontFamily:F, marginTop:"2px" }}>Automatically randomize when text is pasted</div>
+                      <div style={{ fontSize:"13px", fontWeight:"600", color:popupText, fontFamily:F }}>Auto-draw on paste</div>
+                      <div style={{ fontSize:"11px", color:popupSub, fontFamily:F, marginTop:"2px" }}>Automatically randomize when text is pasted</div>
                     </div>
-                    {/* Toggle switch */}
-                    <div style={{ flexShrink:0, width:"40px", height:"22px", borderRadius:"11px", background: settings.autoSubmitOnPaste ? T.accentBar : (T.footerBorder||"#ccc"), position:"relative", transition:"background 0.2s" }}>
+                    <div style={{ flexShrink:0, width:"40px", height:"22px", borderRadius:"11px", background: settings.autoSubmitOnPaste ? T.accentBar : "#999", position:"relative", transition:"background 0.2s" }}>
                       <div style={{ position:"absolute", top:"3px", left: settings.autoSubmitOnPaste ? "21px" : "3px", width:"16px", height:"16px", borderRadius:"50%", background:"white", transition:"left 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.2)" }}/>
                     </div>
                   </label>
                 </div>
               </div>
             </div>
-          )}
+            );
+          })()}
 
           {/* Help overlay */}
-          {showHelp && (
+          {showHelp && (() => {
+            const isDark = ["scoreboard","dark","chalk","nightmatch","neon","usopen","ausopen","cincinnati"].includes(themeKey);
+            const popupBg = isDark ? "#1a1a1a" : "#ffffff";
+            const popupText = isDark ? "#f0f0f0" : "#1a1a1a";
+            const popupSub = isDark ? "#aaaaaa" : "#555555";
+            const popupBorder = isDark ? "#333333" : "rgba(0,0,0,0.08)";
+            const codeColor = isDark ? "#cccccc" : "#444444";
+            return (
             <div style={{ position:"fixed", inset:0, zIndex:200, background:"rgba(0,0,0,0.7)", display:"flex", alignItems:"flex-start", justifyContent:"center", padding:"20px 12px", overflowY:"auto" }}
               onClick={e => { if (e.target === e.currentTarget) setShowHelp(false); }}
             >
-              <div style={{ width:"100%", maxWidth:"560px", background:T.panelBg||"white", border:T.panelBorder||"none", borderRadius:"8px", overflow:"hidden", boxShadow:"0 16px 48px rgba(0,0,0,0.4)" }}>
-                {/* Help header */}
+              <div style={{ width:"100%", maxWidth:"560px", background:popupBg, borderRadius:"8px", overflow:"hidden", boxShadow:"0 16px 48px rgba(0,0,0,0.4)" }}>
                 <div style={{ background:T.headerBg, padding:"14px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
                   <span style={{ color:T.headerColor, fontSize:"15px", fontWeight:"700", fontFamily:F, letterSpacing: isSB?"2px":"0" }}>
                     {isSB ? "HOW TO USE" : "How to Use"}
@@ -766,69 +776,40 @@
                   >✕</button>
                 </div>
 
-                {/* Help content */}
-                <div style={{ padding:"20px", fontFamily:F, color:T.titleColor, fontSize:"14px", lineHeight:1.7 }}>
-
+                <div style={{ padding:"20px", fontFamily:F, color:popupText, fontSize:"14px", lineHeight:1.7 }}>
                   {[
-                    {
-                      title: "Basic Usage",
-                      content: "Paste or type a list of player names into the text box, then hit Draw (or press Enter). Names can be separated by commas, semicolons, newlines, dashes, or bullet characters."
-                    },
-                    {
-                      title: "Singles vs Doubles",
-                      content: "Use the Doubles / Singles toggle in the header to switch modes. Doubles pairs players into teams of 2. Singles puts every player 1v1."
-                    },
-                    {
-                      title: `Force Partners  →  Name1  or  Name & Name`,
-                      content: "Add the same number directly after two players' names to force them onto the same team:\n  Steve2, Greg2\nOr use an ampersand:\n  Steve & Greg\n  Steve&, Greg"
-                    },
-                    {
-                      title: "Keep Players Apart  →  Name-N",
-                      content: "Add -N after a player's name to keep them off the same team as anyone else with the same number:\n  Steve-1, Greg-1\nA player can belong to multiple anti-groups:\n  Jesse-1-2"
-                    },
-                    {
-                      title: "Strong Players  →  Name*",
-                      content: "Add * after a player's name to mark them as a stronger player. The draw will try to spread strong players across teams so they're not all paired together:\n  Steve*, Jesse*"
-                    },
-                    {
-                      title: "Combine Tags",
-                      content: "Tags can be combined on the same name:\n  Steve2*      (partner with group 2, strong)\n  Greg2-1     (partner with group 2, anti-pair group 1)\n  Jesse*-1    (strong, anti-pair group 1)"
-                    },
-                    {
-                      title: "Parenthetical Notes",
-                      content: "Anything in parentheses is stripped before parsing, so notes like (leaving early) or (gotta leave at 9am) won't affect the draw:\n  Kobe (gotta leave at 9:15am)"
-                    },
-                    {
-                      title: "Reset vs Clear",
-                      content: "Reset wipes the draw results but keeps your player list in the text box so you can redraw. Click Reset a second time to also clear the text box."
-                    },
-                    {
-                      title: "Copy Results",
-                      content: "The 📋 button next to Draw copies the matchups to your clipboard in a clean text format, ready to paste into WhatsApp or a message."
-                    },
+                    { title: "Basic Usage", content: "Paste or type a list of player names into the text box, then hit Draw (or press Enter). Names can be separated by commas, semicolons, newlines, dashes, or bullet characters." },
+                    { title: "Singles vs Doubles", content: "Use the Doubles / Singles toggle in the header to switch modes. Doubles pairs players into teams of 2. Singles puts every player 1v1." },
+                    { title: `Force Partners  →  Name1  or  Name & Name`, content: "Add the same number directly after two players' names to force them onto the same team:\n  Steve2, Greg2\nOr use an ampersand:\n  Steve & Greg\n  Steve&, Greg" },
+                    { title: "Keep Players Apart  →  Name-N", content: "Add -N after a player's name to keep them off the same team as anyone else with the same number:\n  Steve-1, Greg-1\nA player can belong to multiple anti-groups:\n  Jesse-1-2" },
+                    { title: "Strong Players  →  Name*", content: "Add * after a player's name to mark them as a stronger player. The draw will try to spread strong players across teams so they're not all paired together:\n  Steve*, Jesse*" },
+                    { title: "Combine Tags", content: "Tags can be combined on the same name:\n  Steve2*      (partner with group 2, strong)\n  Greg2-1     (partner with group 2, anti-pair group 1)\n  Jesse*-1    (strong, anti-pair group 1)" },
+                    { title: "Parenthetical Notes", content: "Anything in parentheses is stripped before parsing, so notes like (leaving early) or (gotta leave at 9am) won't affect the draw:\n  Kobe (gotta leave at 9:15am)" },
+                    { title: "Reset vs Clear", content: "Reset wipes the draw results but keeps your player list in the text box so you can redraw. Click Reset a second time to also clear the text box." },
+                    { title: "Copy Results", content: "The 📋 button next to Draw copies the matchups to your clipboard in a clean text format, ready to paste into WhatsApp or a message." },
                   ].map((section, i) => (
-                    <div key={i} style={{ marginBottom:"18px", paddingBottom:"18px", borderBottom: i < 8 ? `1px solid ${T.footerBorder||"rgba(0,0,0,0.08)"}` : "none" }}>
-                      <div style={{ fontWeight:"700", fontSize:"13px", color:T.accentBar||T.titleColor, marginBottom:"6px", letterSpacing: isSB?"1px":"0", textTransform: isSB?"uppercase":"none" }}>
+                    <div key={i} style={{ marginBottom:"18px", paddingBottom:"18px", borderBottom: i < 8 ? `1px solid ${popupBorder}` : "none" }}>
+                      <div style={{ fontWeight:"700", fontSize:"13px", color:T.accentBar, marginBottom:"6px", letterSpacing: isSB?"1px":"0", textTransform: isSB?"uppercase":"none" }}>
                         {section.title}
                       </div>
                       {section.content.split("\n").map((line, j) => (
-                        <div key={j} style={{ color: line.startsWith("  ") ? T.footerText||"#888" : T.titleColor, fontFamily: line.startsWith("  ") ? "'Courier New', monospace" : F, fontSize: line.startsWith("  ") ? "13px" : "14px", paddingLeft: line.startsWith("  ") ? "12px" : "0" }}>
+                        <div key={j} style={{ color: line.startsWith("  ") ? codeColor : popupText, fontFamily: line.startsWith("  ") ? "'Courier New', monospace" : F, fontSize: line.startsWith("  ") ? "13px" : "14px", paddingLeft: line.startsWith("  ") ? "12px" : "0" }}>
                           {line.trimStart()}
                         </div>
                       ))}
                     </div>
                   ))}
-
                 </div>
 
-                <div style={{ padding:"14px 20px", borderTop:`1px solid ${T.footerBorder||"rgba(0,0,0,0.08)"}`, textAlign:"center" }}>
+                <div style={{ padding:"14px 20px", borderTop:`1px solid ${popupBorder}`, textAlign:"center" }}>
                   <button onClick={() => setShowHelp(false)}
                     style={{ background:T.drawBtnBg, color:T.drawBtnColor, border:"none", borderRadius:"4px", fontFamily:F, fontSize:"13px", fontWeight:"700", padding:"10px 32px", cursor:"pointer", letterSpacing: isSB?"2px":"0", textTransform: isSB?"uppercase":"none" }}
                   >Got it</button>
                 </div>
               </div>
             </div>
-          )}
+            );
+          })()}
 
           {/* Roster panel */}
           {!draw && (
