@@ -48,43 +48,57 @@
         tokens = cleaned.trim().split(/\s+/).filter(Boolean);
       }
 
-      // Parse a single name token — strips trailing *, trailing team number (1-9)
-      // Returns { name, strong, teamNum } or null
+      // Parse a single name token — strips trailing *, trailing team number (1-9), trailing anti-pair (-N)
+      // Returns { name, strong, teamNum, antiNum } or null
       function parseName(str) {
         let s = str.trim();
         const strong = /\*+$/.test(s);
         s = s.replace(/\*+$/, "").trim();
-        // Extract trailing single digit as team number (e.g. "Steve2" → name="Steve", teamNum=2)
-        const teamNumMatch = s.match(/^([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' -]*)(\d)$/);
-        let teamNum = null;
-        if (teamNumMatch) {
-          s = teamNumMatch[1].trim();
-          teamNum = teamNumMatch[2];
+        // Extract trailing -N as anti-pair number (e.g. "Steve-1" → name="Steve", antiNum="1")
+        const antiNumMatch = s.match(/^([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' -]*)-(\d)$/);
+        let antiNum = null;
+        if (antiNumMatch) {
+          s = antiNumMatch[1].trim();
+          antiNum = antiNumMatch[2];
+        } else {
+          // Extract trailing team number (e.g. "Steve2" → name="Steve", teamNum=2)
+          const teamNumMatch = s.match(/^([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' -]*)(\d)$/);
+          if (teamNumMatch) { s = teamNumMatch[1].trim(); }
+          var teamNum = teamNumMatch ? teamNumMatch[2] : null;
         }
         const words = s.split(/\s+/).filter(w => w.length > 0 && !STOPWORDS.test(w));
         if (words.length === 0) return null;
         if (!words.every(w => /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ''-]*$/.test(w))) return null;
         const name = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-        return { name, strong, teamNum };
+        return { name, strong, teamNum: teamNum || null, antiNum };
       }
 
       const names = [];
       const strong = new Set();
       const pairs = [];
+      const antis = []; // pairs that should NOT be on the same team
       const skipped = [];
       let pairNext = null;
       const teamNumGroups = {}; // teamNum → first player name
+      const antiNumGroups = {}; // antiNum → first player name
 
       function addPlayer(r) {
         if (!names.includes(r.name)) names.push(r.name);
         if (r.strong) strong.add(r.name);
-        // Handle team number pairing
         if (r.teamNum) {
           if (teamNumGroups[r.teamNum]) {
             pairs.push([teamNumGroups[r.teamNum], r.name]);
             delete teamNumGroups[r.teamNum];
           } else {
             teamNumGroups[r.teamNum] = r.name;
+          }
+        }
+        if (r.antiNum) {
+          if (antiNumGroups[r.antiNum]) {
+            antis.push([antiNumGroups[r.antiNum], r.name]);
+            delete antiNumGroups[r.antiNum];
+          } else {
+            antiNumGroups[r.antiNum] = r.name;
           }
         }
       }
@@ -137,7 +151,7 @@
         }
       }
 
-      return { names, strong: [...strong], pairs, skipped };
+      return { names, strong: [...strong], pairs, antis, skipped };
     }
 
     function shuffle(arr) {
@@ -146,7 +160,14 @@
       return a;
     }
 
-    function buildDraw(players, mode, pairs, strong) {
+    function buildDraw(players, mode, pairs, strong, antis) {
+      const antiSet = (antis || []).filter(([a,b]) => players.includes(a) && players.includes(b));
+
+      function teamViolatesAntis(team) {
+        return antiSet.some(([a,b]) => team.includes(a) && team.includes(b));
+      }
+
+      function tryBuild() {
       const strongSet = new Set(strong || []);
       const lockedPairs = (pairs || []).filter(([a, b]) => players.includes(a) && players.includes(b));
       const lockedNames = new Set(lockedPairs.flat());
@@ -193,6 +214,17 @@
         courts.push({ label: "Sitting Out", team1: [solo], team2: null, type: "sitout" });
 
       return courts;
+      } // end tryBuild
+
+      // Retry up to 20 times to satisfy anti-pair constraints
+      for (let attempt = 0; attempt < 20; attempt++) {
+        const result = tryBuild();
+        const hasViolation = antiSet.length > 0 && result.some(c =>
+          c.type === "doubles" && (teamViolatesAntis(c.team1) || teamViolatesAntis(c.team2))
+        );
+        if (!hasViolation) return result;
+      }
+      return tryBuild(); // best effort
     }
 
     function useReveal(key) {
@@ -496,6 +528,7 @@
       const [players, setPlayers]       = useState([]);
       const [pairs, setPairs]           = useState([]);
       const [strong, setStrong]         = useState([]);
+      const [antis, setAntis]           = useState([]);
       const [pasteText, setPasteText]   = useState("");
       const [parseError, setParseError] = useState("");
       const [draw, setDraw]             = useState(null);
@@ -530,22 +563,20 @@
         try { localStorage.setItem("tennisDrawTheme", key); } catch {}
       }
 
-      function triggerDraw(namesToUse, pairsToUse, strongToUse) {
+      function triggerDraw(namesToUse, pairsToUse, strongToUse, antisToUse) {
         setBusy(true); setEditMode(false);
-        setTimeout(() => { setDraw(buildDraw(namesToUse, mode, pairsToUse || pairs, strongToUse || strong)); setDrawKey(k => k + 1); setBusy(false); }, 300);
+        setTimeout(() => { setDraw(buildDraw(namesToUse, mode, pairsToUse || pairs, strongToUse || strong, antisToUse || antis)); setDrawKey(k => k + 1); setBusy(false); }, 300);
       }
 
       function doImport(text) {
-        const { names, strong: newStrong, pairs: newPairs, skipped } = parseNames(text);
+        const { names, strong: newStrong, pairs: newPairs, antis: newAntis, skipped } = parseNames(text);
         if (names.length < 2) { setParseError("Couldn't find enough names — try editing below."); return; }
         if (skipped.length > 0) {
           setParseError(`Heads up: couldn't parse "${skipped.join('", "')}" — remove or fix and reimport if needed.`);
-        } else {
-          setParseError("");
-        }
-        setPlayers(names); setPairs(newPairs); setStrong(newStrong);
+        } else { setParseError(""); }
+        setPlayers(names); setPairs(newPairs); setStrong(newStrong); setAntis(newAntis);
         setPartialCleared(false);
-        triggerDraw(names, newPairs, newStrong);
+        triggerDraw(names, newPairs, newStrong, newAntis);
       }
 
       function handleDraw() {
@@ -589,7 +620,7 @@
 
       function handleClear() {
         if (!partialCleared) {
-          setDraw(null); setEditMode(true); setPlayers([]); setPairs([]); setStrong([]); setParseError("");
+          setDraw(null); setEditMode(true); setPlayers([]); setPairs([]); setStrong([]); setAntis([]); setParseError("");
           setPartialCleared(true);
         } else {
           setPasteText(""); setParseError(""); setPartialCleared(false);
