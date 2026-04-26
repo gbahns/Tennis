@@ -32,65 +32,65 @@
         .replace(/\([^)]*\)/g, " ")
         .replace(/^\s*\d+[\.\)]\s*/gm, " ");
 
-      // Detect explicit delimiters (excluding & which we handle separately)
       const hasExplicit = /[,;\n]/.test(cleaned) ||
-        /\s+[-\•\*\–\—\·\▪\▸\►\○\●]\s*[A-Za-z]/m.test(cleaned) ||
-        /^[\s]*[-\•\*\–\—\·\▪\▸\►\○\●]/m.test(cleaned);
+        /\s+[-\•\–\—\·\▪\▸\►\○\●]\s*[A-Za-z]/m.test(cleaned) ||
+        /^[\s]*[-\•\–\—\·\▪\▸\►\○\●]/m.test(cleaned);
 
       let tokens;
       if (hasExplicit) {
         tokens = cleaned
           .replace(/[\n,;]+/g, ",")
-          .replace(/\s+[-\•\*\–\—\·\▪\▸\►\○\●]+\s*/g, ",")
+          .replace(/\s+[-\•\–\—\·\▪\▸\►\○\●]+\s*/g, ",")
           .split(",")
-          .map(t => t.replace(/^[\s\-\•\*\–\—\·\▪\▸\►\○\●]+/, "").trim())
+          .map(t => t.replace(/^[\s\-\•\–\—\·\▪\▸\►\○\●]+/, "").trim())
           .filter(Boolean);
       } else {
         tokens = cleaned.trim().split(/\s+/).filter(Boolean);
       }
 
-      // Parse each token; tokens with & become a locked pair
       function parseName(str) {
-        const words = str.trim().split(/\s+/).filter(w => w.length > 0 && !STOPWORDS.test(w));
+        // Strip trailing * before parsing, return {name, strong}
+        const strong = /\*+$/.test(str.trim());
+        const clean = str.trim().replace(/\*+$/, "").trim();
+        const words = clean.split(/\s+/).filter(w => w.length > 0 && !STOPWORDS.test(w));
         if (words.length === 0) return null;
         if (!words.every(w => /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ''-]*$/.test(w))) return null;
-        return words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+        const name = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+        return { name, strong };
       }
 
       const names = [];
+      const strong = new Set(); // names tagged as strong
       const pairs = [];
       const skipped = [];
-      let pairNext = null; // name waiting to be paired with the next token
+      let pairNext = null;
 
       for (const token of tokens) {
         if (!token || token.length > 80) continue;
         if (/\d/.test(token)) continue;
 
-        // Check if token contains & — could be "A & B", "A&", or "&B"
         if (/&/.test(token)) {
           const parts = token.split("&").map(p => p.trim()).filter(Boolean);
           if (parts.length === 2) {
-            // "A & B" — full pair in one token
-            const a = parseName(parts[0]);
-            const b = parseName(parts[1]);
-            if (a && b) {
-              if (!names.includes(a)) names.push(a);
-              if (!names.includes(b)) names.push(b);
-              pairs.push([a, b]);
+            const ra = parseName(parts[0]), rb = parseName(parts[1]);
+            if (ra && rb) {
+              if (!names.includes(ra.name)) names.push(ra.name);
+              if (!names.includes(rb.name)) names.push(rb.name);
+              if (ra.strong) strong.add(ra.name);
+              if (rb.strong) strong.add(rb.name);
+              pairs.push([ra.name, rb.name]);
             } else {
-              if (a && !names.includes(a)) names.push(a);
-              if (b && !names.includes(b)) names.push(b);
+              if (ra && !names.includes(ra.name)) { names.push(ra.name); if (ra.strong) strong.add(ra.name); }
+              if (rb && !names.includes(rb.name)) { names.push(rb.name); if (rb.strong) strong.add(rb.name); }
             }
             pairNext = null;
             continue;
           } else if (parts.length === 1) {
-            const name = parseName(parts[0]);
-            if (name) {
-              if (!names.includes(name)) names.push(name);
-              // Trailing "&" — this player wants to be paired with the next one
-              if (token.trim().endsWith("&") || token.trim().startsWith("&")) {
-                pairNext = name;
-              }
+            const r = parseName(parts[0]);
+            if (r) {
+              if (!names.includes(r.name)) names.push(r.name);
+              if (r.strong) strong.add(r.name);
+              if (token.trim().endsWith("&") || token.trim().startsWith("&")) pairNext = r.name;
             }
             continue;
           }
@@ -98,12 +98,12 @@
           continue;
         }
 
-        // Normal token
-        const name = parseName(token);
-        if (name) {
-          if (!names.includes(name)) names.push(name);
-          if (pairNext && pairNext !== name) {
-            pairs.push([pairNext, name]);
+        const r = parseName(token);
+        if (r) {
+          if (!names.includes(r.name)) names.push(r.name);
+          if (r.strong) strong.add(r.name);
+          if (pairNext && pairNext !== r.name) {
+            pairs.push([pairNext, r.name]);
             pairNext = null;
           } else {
             pairNext = null;
@@ -114,7 +114,7 @@
         }
       }
 
-      return { names, pairs, skipped };
+      return { names, strong: [...strong], pairs, skipped };
     }
 
     function shuffle(arr) {
@@ -123,36 +123,52 @@
       return a;
     }
 
-    function buildDraw(players, mode, pairs) {
-      // Separate locked pairs from free agents
+    function buildDraw(players, mode, pairs, strong) {
+      const strongSet = new Set(strong || []);
       const lockedPairs = (pairs || []).filter(([a, b]) => players.includes(a) && players.includes(b));
       const lockedNames = new Set(lockedPairs.flat());
-      const freeAgents = shuffle(players.filter(p => !lockedNames.has(p)));
+      const free = shuffle(players.filter(p => !lockedNames.has(p)));
 
       const courts = []; let n = 1;
 
       if (mode === "singles") {
-        // Ignore pairs in singles — just shuffle everyone
         const all = shuffle([...players]);
-        for (let i = 0; i + 1 < all.length; i += 2) {
-          courts.push({ label: `Court ${n}`, team1: [all[i]], team2: [all[i+1]], type: "singles" }); n++;
-        }
-        if (all.length % 2 === 1) courts.push({ label: "Sitting Out", team1: [all[all.length-1]], team2: null, type: "sitout" });
-      } else {
-        // Build teams: locked pairs first, then pair up free agents
-        const teams = [...lockedPairs];
-        for (let i = 0; i + 1 < freeAgents.length; i += 2) teams.push([freeAgents[i], freeAgents[i+1]]);
-        const solo = freeAgents.length % 2 === 1 ? freeAgents[freeAgents.length-1] : null;
-
-        // Shuffle the teams array so locked pairs don't always end up on Court 1
-        const shuffledTeams = shuffle(teams);
-
-        for (let i = 0; i + 1 < shuffledTeams.length; i += 2) {
-          courts.push({ label: `Court ${n}`, team1: shuffledTeams[i], team2: shuffledTeams[i+1], type: "doubles" }); n++;
-        }
-        if (shuffledTeams.length % 2 === 1) courts.push({ label: `Court ${n}`, team1: shuffledTeams[shuffledTeams.length-1], team2: null, type: "singles" });
-        if (solo) courts.push({ label: "Sitting Out", team1: [solo], team2: null, type: "sitout" });
+        for (let i = 0; i + 1 < all.length; i += 2)
+          courts.push({ label: `Court ${n++}`, team1: [all[i]], team2: [all[i+1]], type: "singles" });
+        if (all.length % 2 === 1)
+          courts.push({ label: "Sitting Out", team1: [all[all.length-1]], team2: null, type: "sitout" });
+        return courts;
       }
+
+      // Doubles: pair free agents into teams of 2
+      // If strong players exist, interleave them with normal players before pairing
+      let ordered;
+      if (strongSet.size > 0) {
+        const strongFree = free.filter(p => strongSet.has(p));
+        const normalFree = free.filter(p => !strongSet.has(p));
+        ordered = [];
+        let si = 0, ni = 0;
+        while (si < strongFree.length || ni < normalFree.length) {
+          if (si < strongFree.length) ordered.push(strongFree[si++]);
+          if (ni < normalFree.length) ordered.push(normalFree[ni++]);
+        }
+      } else {
+        ordered = free;
+      }
+
+      const freeTeams = [];
+      for (let i = 0; i + 1 < ordered.length; i += 2)
+        freeTeams.push([ordered[i], ordered[i+1]]);
+      const solo = ordered.length % 2 === 1 ? ordered[ordered.length-1] : null;
+
+      const allTeams = shuffle([...lockedPairs, ...freeTeams]);
+      for (let i = 0; i + 1 < allTeams.length; i += 2)
+        courts.push({ label: `Court ${n++}`, team1: allTeams[i], team2: allTeams[i+1], type: "doubles" });
+      if (allTeams.length % 2 === 1)
+        courts.push({ label: `Court ${n++}`, team1: allTeams[allTeams.length-1], team2: null, type: "singles" });
+      if (solo)
+        courts.push({ label: "Sitting Out", team1: [solo], team2: null, type: "sitout" });
+
       return courts;
     }
 
@@ -456,6 +472,7 @@
       });
       const [players, setPlayers]       = useState([]);
       const [pairs, setPairs]           = useState([]);
+      const [strong, setStrong]         = useState([]);
       const [pasteText, setPasteText]   = useState("");
       const [parseError, setParseError] = useState("");
       const [draw, setDraw]             = useState(null);
@@ -490,22 +507,22 @@
         try { localStorage.setItem("tennisDrawTheme", key); } catch {}
       }
 
-      function triggerDraw(namesToUse, pairsToUse) {
+      function triggerDraw(namesToUse, pairsToUse, strongToUse) {
         setBusy(true); setEditMode(false);
-        setTimeout(() => { setDraw(buildDraw(namesToUse, mode, pairsToUse || pairs)); setDrawKey(k => k + 1); setBusy(false); }, 300);
+        setTimeout(() => { setDraw(buildDraw(namesToUse, mode, pairsToUse || pairs, strongToUse || strong)); setDrawKey(k => k + 1); setBusy(false); }, 300);
       }
 
       function doImport(text) {
-        const { names, pairs: newPairs, skipped } = parseNames(text);
+        const { names, strong: newStrong, pairs: newPairs, skipped } = parseNames(text);
         if (names.length < 2) { setParseError("Couldn't find enough names — try editing below."); return; }
         if (skipped.length > 0) {
           setParseError(`Heads up: couldn't parse "${skipped.join('", "')}" — remove or fix and reimport if needed.`);
         } else {
           setParseError("");
         }
-        setPlayers(names); setPairs(newPairs);
+        setPlayers(names); setPairs(newPairs); setStrong(newStrong);
         setPartialCleared(false);
-        triggerDraw(names, newPairs);
+        triggerDraw(names, newPairs, newStrong);
       }
 
       function handleDraw() {
@@ -518,14 +535,19 @@
       function handleCopy() {
         if (!draw) return;
         const text = draw.map(court => {
-          if (court.type === "doubles")
-            return `${court.label}: ${court.team1.join(" & ")} vs ${court.team2.join(" & ")}`;
-          if (court.type === "singles")
-            return `${court.label}: ${court.team1[0]} vs ${court.team2[0]}`;
-          if (court.type === "sitout")
-            return `Sitting Out: ${court.team1.join(" & ")}`;
+          if (court.type === "doubles") {
+            return `${court.label}:\n${court.team1.join(" & ")}\n${court.team2.join(" & ")}`;
+          }
+          if (court.type === "singles") {
+            const p1 = court.team1[0];
+            const p2 = court.team2 ? court.team2[0] : court.team1[1];
+            return `${court.label}:\n${p1}\n${p2 || ""}`;
+          }
+          if (court.type === "sitout") {
+            return `Sitting Out:\n${court.team1.join(" & ")}`;
+          }
           return "";
-        }).filter(Boolean).join("\n");
+        }).filter(Boolean).join("\n\n");
         navigator.clipboard.writeText(text).then(() => {
           setCopied(true);
           setTimeout(() => setCopied(false), 2000);
@@ -544,7 +566,7 @@
 
       function handleClear() {
         if (!partialCleared) {
-          setDraw(null); setEditMode(true); setPlayers([]); setPairs([]); setParseError("");
+          setDraw(null); setEditMode(true); setPlayers([]); setPairs([]); setStrong([]); setParseError("");
           setPartialCleared(true);
         } else {
           setPasteText(""); setParseError(""); setPartialCleared(false);
@@ -650,34 +672,47 @@
                     {court.type === "doubles" && (
                       <div style={{ padding:"9px 11px", display:"flex", alignItems:"center" }}>
                         <div style={{ flex:1, display:"flex", alignItems:"center", gap:"4px", flexWrap:"wrap" }}>
-                          <span style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px" }}>{isSB?court.team1[0].toUpperCase():court.team1[0]}</span>
-                          <span style={{ fontSize:"12px", color:s.lbl, fontFamily:F }}>&amp;</span>
-                          <span style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px" }}>{isSB?court.team1[1].toUpperCase():court.team1[1]}</span>
+                          {[court.team1[0], court.team1[1]].map((p, i) => [
+                            i > 0 && <span key={`amp1${i}`} style={{ fontSize:"12px", color:s.lbl, fontFamily:F }}>&amp;</span>,
+                            <span key={`p1${i}`} style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px", display:"inline-flex", alignItems:"center", gap:"2px" }}>
+                              {isSB ? p.toUpperCase() : p}{strong.includes(p) && <span style={{ fontSize:"10px", color:s.lbl }}>★</span>}
+                            </span>
+                          ])}
                         </div>
                         <div style={{ flexShrink:0, padding:"0 8px" }}>
                           <span style={{ fontSize:"9px", letterSpacing:"2px", color:s.hColor, fontFamily:F, fontWeight:"900", background:s.hBg, padding:"3px 6px", borderRadius:"3px" }}>VS</span>
                         </div>
                         <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"flex-end", gap:"4px", flexWrap:"wrap" }}>
-                          <span style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px" }}>{isSB?court.team2[0].toUpperCase():court.team2[0]}</span>
-                          <span style={{ fontSize:"12px", color:s.lbl, fontFamily:F }}>&amp;</span>
-                          <span style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px" }}>{isSB?court.team2[1].toUpperCase():court.team2[1]}</span>
+                          {[court.team2[0], court.team2[1]].map((p, i) => [
+                            i > 0 && <span key={`amp2${i}`} style={{ fontSize:"12px", color:s.lbl, fontFamily:F }}>&amp;</span>,
+                            <span key={`p2${i}`} style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px", display:"inline-flex", alignItems:"center", gap:"2px" }}>
+                              {isSB ? p.toUpperCase() : p}{strong.includes(p) && <span style={{ fontSize:"10px", color:s.lbl }}>★</span>}
+                            </span>
+                          ])}
                         </div>
                       </div>
                     )}
 
-                    {court.type === "singles" && (
-                      <div style={{ padding:"9px 11px", display:"flex", alignItems:"center" }}>
-                        <div style={{ flex:1 }}>
-                          <span style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px" }}>{isSB?court.team1[0].toUpperCase():court.team1[0]}</span>
+                    {court.type === "singles" && (() => {
+                      // Two shapes: singles-mode has team1:[p1], team2:[p2]
+                      // Odd-doubles-teams has team1:[p1,p2], team2:null
+                      const p1 = court.team2 ? court.team1[0] : court.team1[0];
+                      const p2 = court.team2 ? court.team2[0] : court.team1[1];
+                      if (!p1 || !p2) return null;
+                      return (
+                        <div style={{ padding:"9px 11px", display:"flex", alignItems:"center" }}>
+                          <div style={{ flex:1 }}>
+                            <span style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px" }}>{isSB?p1.toUpperCase():p1}{strong.includes(p1) && <span style={{ fontSize:"10px", color:s.lbl, marginLeft:"2px" }}>★</span>}</span>
+                          </div>
+                          <div style={{ flexShrink:0, padding:"0 8px" }}>
+                            <span style={{ fontSize:"9px", letterSpacing:"2px", color:s.hColor, fontFamily:F, fontWeight:"900", background:s.hBg, padding:"3px 6px", borderRadius:"3px" }}>VS</span>
+                          </div>
+                          <div style={{ flex:1, display:"flex", justifyContent:"flex-end" }}>
+                            <span style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px" }}>{isSB?p2.toUpperCase():p2}{strong.includes(p2) && <span style={{ fontSize:"10px", color:s.lbl, marginLeft:"2px" }}>★</span>}</span>
+                          </div>
                         </div>
-                        <div style={{ flexShrink:0, padding:"0 8px" }}>
-                          <span style={{ fontSize:"9px", letterSpacing:"2px", color:s.hColor, fontFamily:F, fontWeight:"900", background:s.hBg, padding:"3px 6px", borderRadius:"3px" }}>VS</span>
-                        </div>
-                        <div style={{ flex:1, display:"flex", justifyContent:"flex-end" }}>
-                          <span style={{ fontSize:"16px", fontWeight:"700", color:s.name, fontFamily:F, letterSpacing:isSB?"1px":"-0.3px" }}>{isSB?court.team2[0].toUpperCase():court.team2[0]}</span>
-                        </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
                     {court.type === "sitout" && (
                       <div style={{ padding:"9px 11px" }}>
