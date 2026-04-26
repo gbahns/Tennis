@@ -48,29 +48,33 @@
         tokens = cleaned.trim().split(/\s+/).filter(Boolean);
       }
 
-      // Parse a single name token — strips trailing *, trailing team number (1-9), trailing anti-pair (-N)
-      // Returns { name, strong, teamNum, antiNum } or null
+      // Parse a single name token — strips trailing *, trailing team number (1-9), trailing anti-pair (-N, or -N-M for multiple)
+      // Returns { name, strong, teamNum, antiNums } or null
       function parseName(str) {
         let s = str.trim();
         const strong = /\*+$/.test(s);
         s = s.replace(/\*+$/, "").trim();
-        // Extract trailing -N as anti-pair number (e.g. "Steve-1" → name="Steve", antiNum="1")
-        const antiNumMatch = s.match(/^([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' -]*)-(\d)$/);
-        let antiNum = null;
-        if (antiNumMatch) {
-          s = antiNumMatch[1].trim();
-          antiNum = antiNumMatch[2];
-        } else {
-          // Extract trailing team number (e.g. "Steve2" → name="Steve", teamNum=2)
-          const teamNumMatch = s.match(/^([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' -]*)(\d)$/);
-          if (teamNumMatch) { s = teamNumMatch[1].trim(); }
-          var teamNum = teamNumMatch ? teamNumMatch[2] : null;
+
+        // Extract trailing anti-pair groups: -1, -1-2, -1-2-3 etc.
+        const antiNums = [];
+        let antiMatch;
+        while ((antiMatch = s.match(/^(.*[A-Za-zÀ-ÿ\d])-(\d)$/)) !== null) {
+          antiNums.unshift(antiMatch[2]);
+          s = antiMatch[1].trim();
+          // Stop if what's left ends with a letter (name part), not another -N
+          if (!/\d$/.test(s)) break;
         }
+
+        // Extract trailing team number (positive, e.g. "Steve2")
+        const teamNumMatch = s.match(/^([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' ]*)(\d)$/);
+        let teamNum = null;
+        if (teamNumMatch) { s = teamNumMatch[1].trim(); teamNum = teamNumMatch[2]; }
+
         const words = s.split(/\s+/).filter(w => w.length > 0 && !STOPWORDS.test(w));
         if (words.length === 0) return null;
         if (!words.every(w => /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ''-]*$/.test(w))) return null;
         const name = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-        return { name, strong, teamNum: teamNum || null, antiNum };
+        return { name, strong, teamNum, antiNums };
       }
 
       const names = [];
@@ -93,13 +97,15 @@
             teamNumGroups[r.teamNum] = r.name;
           }
         }
-        if (r.antiNum) {
-          if (antiNumGroups[r.antiNum]) {
-            antis.push([antiNumGroups[r.antiNum], r.name]);
-            delete antiNumGroups[r.antiNum];
-          } else {
-            antiNumGroups[r.antiNum] = r.name;
-          }
+        if (r.antiNums && r.antiNums.length > 0) {
+          r.antiNums.forEach(an => {
+            if (antiNumGroups[an]) {
+              antis.push([antiNumGroups[an], r.name]);
+              delete antiNumGroups[an];
+            } else {
+              antiNumGroups[an] = r.name;
+            }
+          });
         }
       }
 
@@ -550,6 +556,22 @@
       const canDraw = pc >= 2 || parseNames(pasteText).names.length >= 2;
 
       const [themeOpen, setThemeOpen] = useState(false);
+      const [showHelp, setShowHelp] = useState(false);
+      const [showSettings, setShowSettings] = useState(false);
+
+      // Settings — persisted in localStorage
+      const [settings, setSettings] = useState(() => {
+        try {
+          const saved = JSON.parse(localStorage.getItem("matchupSettings") || "{}");
+          return { autoSubmitOnPaste: true, ...saved };
+        } catch { return { autoSubmitOnPaste: true }; }
+      });
+
+      function updateSetting(key, value) {
+        const next = { ...settings, [key]: value };
+        setSettings(next);
+        try { localStorage.setItem("matchupSettings", JSON.stringify(next)); } catch {}
+      }
       useEffect(() => {
         if (!themeOpen) return;
         const close = () => setThemeOpen(false);
@@ -652,13 +674,28 @@
                 ))}
               </div>
             </div>
-            <div style={{ position:"relative", flexShrink:0 }}>
-              <button
-                onClick={() => setThemeOpen(o => !o)}
-                style={{ background:"transparent", border:"none", color:T.titleColor, fontFamily:F, fontSize:"13px", fontWeight:"700", cursor:"pointer", letterSpacing:"1px", opacity:0.7, padding:"4px 0" }}
-              >
-                Theme ▾
-              </button>
+            <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:"6px", flexShrink:0 }}>
+              {/* Gear + Help icons - aligned with title */}
+              <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
+                <button
+                  onClick={() => { setShowSettings(s => !s); setShowHelp(false); }}
+                  style={{ background:"transparent", border:"none", color:T.titleColor, fontSize:"15px", cursor:"pointer", opacity:0.6, padding:"0", lineHeight:1, height:"19px" }}
+                  title="Settings"
+                >⚙</button>
+                <button
+                  onClick={() => { setShowHelp(true); setShowSettings(false); }}
+                  style={{ background:"transparent", border:"none", color:T.titleColor, fontFamily:F, fontSize:"15px", fontWeight:"700", cursor:"pointer", opacity:0.6, padding:"0", lineHeight:1, height:"19px" }}
+                  title="Help"
+                >?</button>
+              </div>
+              {/* Theme selector */}
+              <div style={{ position:"relative" }}>
+                <button
+                  onClick={() => setThemeOpen(o => !o)}
+                  style={{ background:"transparent", border:"none", color:T.titleColor, fontFamily:F, fontSize:"12px", fontWeight:"700", cursor:"pointer", letterSpacing:"1px", opacity:0.7, padding:"0", lineHeight:1 }}
+                >
+                  Theme ▾
+                </button>
               {themeOpen && (
                 <div style={{ position:"absolute", right:0, top:"calc(100% + 6px)", zIndex:100, border:`1px solid ${T.footerBorder||"#e0e0e0"}`, borderRadius:"6px", overflow:"hidden", boxShadow:"0 8px 24px rgba(0,0,0,0.25)", minWidth:"170px" }}>
                   {THEME_KEYS.map(key => {
@@ -679,8 +716,119 @@
                   })}
                 </div>
               )}
+              </div>{/* end theme relative */}
+            </div>{/* end flex wrapper */}
+          </div>{/* end header */}
+
+          {/* Settings popup */}
+          {showSettings && (
+            <div style={{ position:"fixed", inset:0, zIndex:200, display:"flex", alignItems:"flex-start", justifyContent:"flex-end", padding:"56px 12px 0" }}
+              onClick={() => setShowSettings(false)}>
+              <div onClick={e => e.stopPropagation()}
+                style={{ background:T.panelBg||"white", border:`1px solid ${T.footerBorder||"#e0e0e0"}`, borderRadius:"8px", boxShadow:"0 8px 32px rgba(0,0,0,0.2)", width:"280px", overflow:"hidden" }}>
+                {/* Header */}
+                <div style={{ background:T.headerBg, padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                  <span style={{ color:T.headerColor, fontSize:"13px", fontWeight:"700", fontFamily:F, letterSpacing:"0.5px" }}>⚙ Settings</span>
+                  <button onClick={() => setShowSettings(false)}
+                    style={{ background:"transparent", border:"none", color:T.headerColor, fontSize:"16px", cursor:"pointer", opacity:0.7, lineHeight:1, padding:"0" }}>✕</button>
+                </div>
+                {/* Settings list */}
+                <div style={{ padding:"4px 0" }}>
+                  <label style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"12px 16px", cursor:"pointer", gap:"12px" }}
+                    onClick={() => updateSetting("autoSubmitOnPaste", !settings.autoSubmitOnPaste)}>
+                    <div>
+                      <div style={{ fontSize:"13px", fontWeight:"600", color:T.titleColor, fontFamily:F }}>Auto-draw on paste</div>
+                      <div style={{ fontSize:"11px", color:T.footerText, fontFamily:F, marginTop:"2px" }}>Automatically randomize when text is pasted</div>
+                    </div>
+                    {/* Toggle switch */}
+                    <div style={{ flexShrink:0, width:"40px", height:"22px", borderRadius:"11px", background: settings.autoSubmitOnPaste ? T.accentBar : (T.footerBorder||"#ccc"), position:"relative", transition:"background 0.2s" }}>
+                      <div style={{ position:"absolute", top:"3px", left: settings.autoSubmitOnPaste ? "21px" : "3px", width:"16px", height:"16px", borderRadius:"50%", background:"white", transition:"left 0.2s", boxShadow:"0 1px 3px rgba(0,0,0,0.2)" }}/>
+                    </div>
+                  </label>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Help overlay */}
+          {showHelp && (
+            <div style={{ position:"fixed", inset:0, zIndex:200, background:"rgba(0,0,0,0.7)", display:"flex", alignItems:"flex-start", justifyContent:"center", padding:"20px 12px", overflowY:"auto" }}
+              onClick={e => { if (e.target === e.currentTarget) setShowHelp(false); }}
+            >
+              <div style={{ width:"100%", maxWidth:"560px", background:T.panelBg||"white", border:T.panelBorder||"none", borderRadius:"8px", overflow:"hidden", boxShadow:"0 16px 48px rgba(0,0,0,0.4)" }}>
+                {/* Help header */}
+                <div style={{ background:T.headerBg, padding:"14px 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                  <span style={{ color:T.headerColor, fontSize:"15px", fontWeight:"700", fontFamily:F, letterSpacing: isSB?"2px":"0" }}>
+                    {isSB ? "HOW TO USE" : "How to Use"}
+                  </span>
+                  <button onClick={() => setShowHelp(false)}
+                    style={{ background:"rgba(255,255,255,0.2)", border:"none", color:T.headerColor, borderRadius:"50%", width:"28px", height:"28px", cursor:"pointer", fontFamily:F, fontSize:"16px", fontWeight:"700", display:"flex", alignItems:"center", justifyContent:"center" }}
+                  >✕</button>
+                </div>
+
+                {/* Help content */}
+                <div style={{ padding:"20px", fontFamily:F, color:T.titleColor, fontSize:"14px", lineHeight:1.7 }}>
+
+                  {[
+                    {
+                      title: "Basic Usage",
+                      content: "Paste or type a list of player names into the text box, then hit Draw (or press Enter). Names can be separated by commas, semicolons, newlines, dashes, or bullet characters."
+                    },
+                    {
+                      title: "Singles vs Doubles",
+                      content: "Use the Doubles / Singles toggle in the header to switch modes. Doubles pairs players into teams of 2. Singles puts every player 1v1."
+                    },
+                    {
+                      title: `Force Partners  →  Name1  or  Name & Name`,
+                      content: "Add the same number directly after two players' names to force them onto the same team:\n  Steve2, Greg2\nOr use an ampersand:\n  Steve & Greg\n  Steve&, Greg"
+                    },
+                    {
+                      title: "Keep Players Apart  →  Name-N",
+                      content: "Add -N after a player's name to keep them off the same team as anyone else with the same number:\n  Steve-1, Greg-1\nA player can belong to multiple anti-groups:\n  Jesse-1-2"
+                    },
+                    {
+                      title: "Strong Players  →  Name*",
+                      content: "Add * after a player's name to mark them as a stronger player. The draw will try to spread strong players across teams so they're not all paired together:\n  Steve*, Jesse*"
+                    },
+                    {
+                      title: "Combine Tags",
+                      content: "Tags can be combined on the same name:\n  Steve2*      (partner with group 2, strong)\n  Greg2-1     (partner with group 2, anti-pair group 1)\n  Jesse*-1    (strong, anti-pair group 1)"
+                    },
+                    {
+                      title: "Parenthetical Notes",
+                      content: "Anything in parentheses is stripped before parsing, so notes like (leaving early) or (gotta leave at 9am) won't affect the draw:\n  Kobe (gotta leave at 9:15am)"
+                    },
+                    {
+                      title: "Reset vs Clear",
+                      content: "Reset wipes the draw results but keeps your player list in the text box so you can redraw. Click Reset a second time to also clear the text box."
+                    },
+                    {
+                      title: "Copy Results",
+                      content: "The 📋 button next to Draw copies the matchups to your clipboard in a clean text format, ready to paste into WhatsApp or a message."
+                    },
+                  ].map((section, i) => (
+                    <div key={i} style={{ marginBottom:"18px", paddingBottom:"18px", borderBottom: i < 8 ? `1px solid ${T.footerBorder||"rgba(0,0,0,0.08)"}` : "none" }}>
+                      <div style={{ fontWeight:"700", fontSize:"13px", color:T.accentBar||T.titleColor, marginBottom:"6px", letterSpacing: isSB?"1px":"0", textTransform: isSB?"uppercase":"none" }}>
+                        {section.title}
+                      </div>
+                      {section.content.split("\n").map((line, j) => (
+                        <div key={j} style={{ color: line.startsWith("  ") ? T.footerText||"#888" : T.titleColor, fontFamily: line.startsWith("  ") ? "'Courier New', monospace" : F, fontSize: line.startsWith("  ") ? "13px" : "14px", paddingLeft: line.startsWith("  ") ? "12px" : "0" }}>
+                          {line.trimStart()}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+
+                </div>
+
+                <div style={{ padding:"14px 20px", borderTop:`1px solid ${T.footerBorder||"rgba(0,0,0,0.08)"}`, textAlign:"center" }}>
+                  <button onClick={() => setShowHelp(false)}
+                    style={{ background:T.drawBtnBg, color:T.drawBtnColor, border:"none", borderRadius:"4px", fontFamily:F, fontSize:"13px", fontWeight:"700", padding:"10px 32px", cursor:"pointer", letterSpacing: isSB?"2px":"0", textTransform: isSB?"uppercase":"none" }}
+                  >Got it</button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Roster panel */}
           {!draw && (
@@ -688,11 +836,13 @@
               <div style={{ padding:"10px 12px", borderBottom:`1px solid ${T.footerBorder}` }}>
                 <textarea value={pasteText}
                   onChange={e => { setPasteText(e.target.value); setParseError(""); }}
-                  onPaste={e => { const text = e.clipboardData.getData("text"); if (text) { setTimeout(() => doImport(text), 0); } }}
+                  onPaste={e => { const text = e.clipboardData.getData("text"); if (text && settings.autoSubmitOnPaste) { setTimeout(() => doImport(text), 0); } }}
                   onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); if (pasteText.trim()) doImport(pasteText); } }}
                   placeholder={isSB ? "PASTE OR TYPE PLAYER LIST HERE..." : "Paste or type player list here…"}
                   rows={3}
-                  style={{ width:"100%", boxSizing:"border-box", padding:"9px 11px", border:`1.5px solid ${T.textareaBorder}`, borderRadius:isSB?"2px":"4px", fontFamily:F, fontSize:"13px", color:T.textareaColor, background:T.textareaBg, outline:"none", resize:"none", lineHeight:1.5, display:"block" }}
+                  ref={el => { if (el) { el.style.height = "auto"; el.style.height = Math.min(el.scrollHeight, 220) + "px"; } }}
+                  onInput={e => { e.target.style.height = "auto"; e.target.style.height = Math.min(e.target.scrollHeight, 220) + "px"; }}
+                  style={{ width:"100%", boxSizing:"border-box", padding:"9px 11px", border:`1.5px solid ${T.textareaBorder}`, borderRadius:isSB?"2px":"4px", fontFamily:F, fontSize:"13px", color:T.textareaColor, background:T.textareaBg, outline:"none", resize:"none", lineHeight:1.5, display:"block", overflow:"hidden", transition:"height 0.1s ease" }}
                   onFocus={e => e.target.style.borderColor = T.textareaFocus}
                   onBlur={e => e.target.style.borderColor = T.textareaBorder}
                 />
