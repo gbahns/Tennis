@@ -1,0 +1,1107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Test Drive & Tracking Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1980px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f6f8;
+        }
+        .table-wrap {
+            overflow-x: auto;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .table-wrap table {
+            margin-bottom: 0;
+            box-shadow: none;
+            border-radius: 0;
+        }
+        .compact th, .compact td {
+            padding: 8px 10px;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+        h1 { 
+            color: #2c3e50; 
+            text-align: center; 
+            margin-bottom: 30px; 
+            font-size: 2.5em;
+        }
+        h2 { 
+            color: #34495e; 
+            border-bottom: 2px solid #bdc3c7; 
+            padding-bottom: 10px; 
+            margin-top: 40px; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 30px; 
+            background-color: #fff; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td { 
+            padding: 15px; 
+            text-align: left; 
+            border-bottom: 1px solid #e0e0e0; 
+        }
+        th { 
+            background-color: #2980b9; 
+            color: #fff; 
+            font-weight: 600; 
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover { 
+            background-color: #f1f8ff; 
+        }
+        .highlight { 
+            font-weight: bold; 
+            color: #e74c3c; 
+        }
+        em {
+            color: #555;
+            font-size: 0.95em;
+        }
+        .tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid #bdc3c7;
+            margin-bottom: 20px;
+        }
+        .tab-button {
+            background: #e6ebf0;
+            color: #34495e;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: background 0.2s, color 0.2s;
+            font-family: inherit;
+        }
+        .tab-button:hover {
+            background: #d4dde5;
+        }
+        .tab-button.active {
+            background: #2980b9;
+            color: #fff;
+        }
+        .tab-panel {
+            display: none;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        .tab-panel h2 {
+            margin-top: 0;
+        }
+        table.sortable th {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 22px;
+        }
+        table.sortable th:hover {
+            background-color: #1f6391;
+        }
+        table.sortable th .sort-arrow {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75em;
+            opacity: 0.5;
+        }
+        table.sortable th.sort-asc .sort-arrow,
+        table.sortable th.sort-desc .sort-arrow {
+            opacity: 1;
+        }
+        .filter-row th {
+            background-color: #ecf0f3;
+            padding: 6px 8px;
+            cursor: default;
+        }
+        .filter-row th:hover {
+            background-color: #ecf0f3;
+        }
+        .filter-row input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 5px 7px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-family: inherit;
+        }
+        .filter-row input:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 0 2px rgba(41,128,185,0.2);
+        }
+        .table-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .clear-filters,
+        .toggle-reference {
+            background: #fff;
+            color: #34495e;
+            border: 1px solid #bdc3c7;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-family: inherit;
+        }
+        .clear-filters:hover,
+        .toggle-reference:hover {
+            background: #ecf0f3;
+        }
+        .toggle-reference[data-hidden="true"] {
+            background: #fdf3e0;
+            border-color: #d4b483;
+            color: #6b5230;
+        }
+        .no-results-row td {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-style: italic;
+        }
+        tr.reference {
+            background-color: #fdf3e0;
+            color: #6b5230;
+        }
+        tr.reference td strong {
+            color: #6b5230;
+        }
+        tr.reference em {
+            color: #8a6b3d;
+        }
+        tr.reference:hover {
+            background-color: #fbe9c7;
+        }
+        td.stop-num {
+            font-weight: 700;
+            color: #2980b9;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        td.stop-num.linked {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 3px;
+        }
+        td.stop-num.linked:hover {
+            color: #1f6391;
+            background-color: #eaf4fb;
+        }
+        tr.backup td.stop-num {
+            color: #95a5a6;
+            font-weight: 400;
+        }
+        @keyframes rowFlash {
+            0%   { background-color: #fff9c4; }
+            100% { background-color: transparent; }
+        }
+        tr.row-highlight > td {
+            animation: rowFlash 1.8s ease-out;
+        }
+        tr.backup {
+            color: #6c7a83;
+        }
+        tr.backup td strong {
+            color: #6c7a83;
+        }
+        tr.backup:hover {
+            background-color: #f0f3f5;
+        }
+        .itinerary-intro {
+            background: #eaf4fb;
+            border-left: 4px solid #2980b9;
+            padding: 10px 14px;
+            margin: 0 0 16px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        .map-route-btn {
+            background: #27ae60;
+            color: #fff;
+            border: 1px solid #1f8c4d;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-decoration: none;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+        }
+        .map-route-btn:hover {
+            background: #1f8c4d;
+        }
+        td a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        td.notes {
+            background: #fffbea;
+            padding: 0 !important;
+            cursor: text;
+        }
+        td.notes .notes-inner {
+            width: 320px;
+            max-width: 320px;
+            padding: 8px 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-style: italic;
+            color: #5a4a1a;
+            outline: none;
+            box-sizing: border-box;
+        }
+        td.notes .notes-inner:focus {
+            white-space: normal;
+            overflow: visible;
+            background: #fff;
+            font-style: normal;
+            color: #333;
+            outline: 2px solid #2980b9;
+        }
+        td.notes .notes-inner:empty::before {
+            content: 'Click to add notes…';
+            color: #b8a875;
+            font-style: italic;
+        }
+        td.notes .notes-inner:focus:empty::before {
+            content: '';
+        }
+        tr.reference td.notes {
+            background: #fdf3e0;
+        }
+        tr.reference td.notes .notes-inner {
+            color: #6b5230;
+        }
+    </style>
+</head>
+<body>
+    <h1>EV Test Drive & Tracking Guide</h1>
+
+    <div class="tabs" role="tablist">
+        <button class="tab-button active" role="tab" aria-controls="panel-options" aria-selected="true" data-target="panel-options">EV Options Guide</button>
+        <button class="tab-button" role="tab" aria-controls="panel-deals" aria-selected="false" data-target="panel-deals">Deals</button>
+        <button class="tab-button" role="tab" aria-controls="panel-itinerary" aria-selected="false" data-target="panel-itinerary">Test Drive Itinerary</button>
+    </div>
+
+    <section id="panel-options" class="tab-panel active" role="tabpanel">
+    <div class="table-controls">
+        <button type="button" class="toggle-reference" data-hidden="false">Hide gas cars</button>
+        <button type="button" class="clear-filters">Clear filters</button>
+    </div>
+    <div class="table-wrap">
+    <table class="compact sortable">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Trim</th>
+                <th title="Combined Space (Front + Rear legroom)">Space</th>
+                <th title="Wheelbase">WB</th>
+                <th title="Front Headroom">F-Head</th>
+                <th title="Rear Headroom">R-Head</th>
+                <th>Audio</th>
+                <th title="Charge Port / Powertrain">Tech</th>
+                <th title="Battery Architecture Voltage">V</th>
+                <th title="Peak DC Fast-Charge kW">kW</th>
+                <th data-best="low">0-60</th>
+                <th title="EPA Range (mi)">Range</th>
+                <th data-best="low" title="Manufacturer's suggested retail price (launch)">MSRP</th>
+                <th data-best="low">Target</th>
+                <th class="notes-col" title="Click any notes cell to edit. Saved to your browser.">Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2023</td>
+                <td>Cadillac</td>
+                <td>Lyriq</td>
+                <td>Luxury (only)</td>
+                <td><strong>83.9"</strong></td>
+                <td>121.8"</td>
+                <td>38.6"</td>
+                <td>37.7"</td>
+                <td>AKG (19)</td>
+                <td>CCS</td>
+                <td>400V</td>
+                <td>190</td>
+                <td>5.7</td>
+                <td>312</td>
+                <td>$61,795</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td>2024</td>
+                <td>Cadillac</td>
+                <td>Lyriq</td>
+                <td>Luxury 2</td>
+                <td><strong>83.9"</strong></td>
+                <td>121.8"</td>
+                <td>38.6"</td>
+                <td>37.7"</td>
+                <td>AKG (19)</td>
+                <td>CCS</td>
+                <td>400V</td>
+                <td>190</td>
+                <td>4.6</td>
+                <td>314</td>
+                <td>$63,490</td>
+                <td>$47,000</td>
+            </tr>
+            <tr>
+                <td>2025</td>
+                <td>Cadillac</td>
+                <td>Lyriq</td>
+                <td>Luxury 2</td>
+                <td><strong>83.9"</strong></td>
+                <td>121.8"</td>
+                <td>38.6"</td>
+                <td>37.7"</td>
+                <td>AKG (19)</td>
+                <td>CCS</td>
+                <td>400V</td>
+                <td>190</td>
+                <td>4.6</td>
+                <td>326</td>
+                <td>$63,595</td>
+                <td>$47,000</td>
+            </tr>
+            <tr>
+                <td>2026</td>
+                <td>Cadillac</td>
+                <td>Lyriq</td>
+                <td>Premium Luxury</td>
+                <td><strong>83.9"</strong></td>
+                <td>121.8"</td>
+                <td>38.6"</td>
+                <td>37.7"</td>
+                <td>AKG (23)</td>
+                <td>CCS</td>
+                <td>400V</td>
+                <td>190</td>
+                <td>4.6</td>
+                <td>326</td>
+                <td>$63,200</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td>2023</td>
+                <td>Lucid</td>
+                <td>Air</td>
+                <td>Pure / Touring</td>
+                <td><strong>83.2"</strong></td>
+                <td>116.5"</td>
+                <td>39.6"</td>
+                <td>38.3"</td>
+                <td>Surreal</td>
+                <td>CCS</td>
+                <td>900V</td>
+                <td>250</td>
+                <td>3.4</td>
+                <td>425</td>
+                <td>$77,400</td>
+                <td>$41,000</td>
+            </tr>
+            <tr>
+                <td>2023</td>
+                <td>Lucid</td>
+                <td>Air</td>
+                <td>Grand Tour</td>
+                <td><strong>83.2"</strong></td>
+                <td>116.5"</td>
+                <td>39.6"</td>
+                <td>38.3"</td>
+                <td>Surreal</td>
+                <td>CCS</td>
+                <td>900V</td>
+                <td>300</td>
+                <td>3.0</td>
+                <td>516</td>
+                <td>$138,000</td>
+                <td>$47,000</td>
+            </tr>
+            <tr class="reference">
+                <td>2024</td>
+                <td>Honda</td>
+                <td>Accord</td>
+                <td><em>(Reference)</em></td>
+                <td>83.1"</td>
+                <td>111.4"</td>
+                <td>39.5"</td>
+                <td>37.3"</td>
+                <td>Bose (12)</td>
+                <td>Gas</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>6.6</td>
+                <td>500</td>
+                <td>—</td>
+                <td>Ref</td>
+            </tr>
+            <tr>
+                <td>2025</td>
+                <td>Chevy</td>
+                <td>Blazer EV</td>
+                <td>RS AWD</td>
+                <td><strong>83.1"</strong></td>
+                <td>121.8"</td>
+                <td>39.6"</td>
+                <td>38.1"</td>
+                <td>Bose (8)</td>
+                <td>CCS</td>
+                <td>400V</td>
+                <td>150</td>
+                <td>6.0</td>
+                <td>279</td>
+                <td>$50,790</td>
+                <td>$47,000</td>
+            </tr>
+            <tr class="reference">
+                <td>2024</td>
+                <td>Honda</td>
+                <td>CR-V</td>
+                <td><em>(Reference)</em></td>
+                <td>82.3"</td>
+                <td>106.3"</td>
+                <td>40.0"</td>
+                <td>38.2"</td>
+                <td>Bose (12)</td>
+                <td>Gas</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>7.9</td>
+                <td>420</td>
+                <td>—</td>
+                <td>Ref</td>
+            </tr>
+            <tr>
+                <td>2023</td>
+                <td>Hyundai</td>
+                <td>IONIQ 6</td>
+                <td>Limited LR RWD</td>
+                <td><strong>81.5"</strong></td>
+                <td>116.1"</td>
+                <td>38.7"</td>
+                <td>35.9"</td>
+                <td>Bose (8)</td>
+                <td>CCS</td>
+                <td>800V</td>
+                <td>233</td>
+                <td>5.1</td>
+                <td>305</td>
+                <td>$52,600</td>
+                <td>$31,000</td>
+            </tr>
+            <tr>
+                <td>2025</td>
+                <td>Kia</td>
+                <td>EV6</td>
+                <td>GT-Line</td>
+                <td><strong>81.4"</strong></td>
+                <td>114.2"</td>
+                <td>39.0"</td>
+                <td>38.0"</td>
+                <td>Meridian</td>
+                <td>CCS</td>
+                <td>800V</td>
+                <td>233</td>
+                <td>5.1</td>
+                <td>282</td>
+                <td>$58,600</td>
+                <td>$46,000</td>
+            </tr>
+            <tr class="reference">
+                <td>2014</td>
+                <td>Nissan</td>
+                <td>Altima</td>
+                <td>SL <em>(Baseline)</em></td>
+                <td>81.1"</td>
+                <td>109.3"</td>
+                <td>39.1"</td>
+                <td>37.1"</td>
+                <td>Bose (9)</td>
+                <td>Gas</td>
+                <td>N/A</td>
+                <td>N/A</td>
+                <td>7.7</td>
+                <td>550</td>
+                <td>—</td>
+                <td>Base</td>
+            </tr>
+            <tr>
+                <td>2025</td>
+                <td>Hyundai</td>
+                <td>IONIQ 5</td>
+                <td>Limited</td>
+                <td><strong>81.1"</strong></td>
+                <td>118.1"</td>
+                <td>39.8"</td>
+                <td>38.7"</td>
+                <td>Bose (8)</td>
+                <td>NACS</td>
+                <td>800V</td>
+                <td>233</td>
+                <td>5.0</td>
+                <td>260</td>
+                <td>$58,100</td>
+                <td>$38,000</td>
+            </tr>
+            <tr>
+                <td>2024</td>
+                <td>Hyundai</td>
+                <td>IONIQ 5</td>
+                <td>Limited</td>
+                <td><strong>81.1"</strong></td>
+                <td>118.1"</td>
+                <td>39.8"</td>
+                <td>38.7"</td>
+                <td>Bose (8)</td>
+                <td>CCS</td>
+                <td>800V</td>
+                <td>233</td>
+                <td>5.1</td>
+                <td>260</td>
+                <td>$54,200</td>
+                <td>$33,000</td>
+            </tr>
+            <tr>
+                <td>2024</td>
+                <td>Genesis</td>
+                <td>GV60</td>
+                <td>Advanced</td>
+                <td>79.9"</td>
+                <td>114.2"</td>
+                <td>39.0"</td>
+                <td>38.1"</td>
+                <td>B&amp;O (17)</td>
+                <td>CCS</td>
+                <td>800V</td>
+                <td>233</td>
+                <td>4.5</td>
+                <td>248</td>
+                <td>$61,500</td>
+                <td>$48,000</td>
+            </tr>
+            <tr>
+                <td>2025</td>
+                <td>Chevy</td>
+                <td>Equinox EV</td>
+                <td>3RS</td>
+                <td>79.7"</td>
+                <td>116.3"</td>
+                <td>40.0"</td>
+                <td>38.1"</td>
+                <td>Bose (8)</td>
+                <td>CCS</td>
+                <td>400V</td>
+                <td>150</td>
+                <td>5.9</td>
+                <td>319</td>
+                <td>$48,395</td>
+                <td>$39,000</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </section>
+
+    <section id="panel-deals" class="tab-panel" role="tabpanel">
+    <div class="table-controls">
+        <button type="button" class="clear-filters">Clear filters</button>
+    </div>
+    <div class="table-wrap">
+    <table class="compact sortable">
+        <thead>
+            <tr>
+                <th title="Apr 30 itinerary stop number — click to jump">Stop</th>
+                <th title="Date the deal was seen or quoted">Date</th>
+                <th>Year</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Trim</th>
+                <th title="Exterior color">Color</th>
+                <th title="New or Used">Cond</th>
+                <th data-best="low" title="Odometer (used cars)">Miles</th>
+                <th title="Dealer or marketplace">Source</th>
+                <th title="Dealer stock # or last 6 of VIN">Stock #</th>
+                <th>Location</th>
+                <th data-best="low" title="Cash purchase price">Cash</th>
+                <th data-best="low" title="Lease monthly payment">Lease $/mo</th>
+                <th data-best="low" title="Total due at signing">DAS</th>
+                <th title="Term / annual miles / money factor or APR">Lease Terms</th>
+                <th title="Link to dealer listing">Link</th>
+                <th>Notes / Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="stop-num">1</td>
+                <td>2026-04-29</td>
+                <td>2023</td>
+                <td>Lucid</td>
+                <td>Air</td>
+                <td>Grand Touring</td>
+                <td></td>
+                <td>Used</td>
+                <td></td>
+                <td>Lexus of Dayton</td>
+                <td></td>
+                <td>Centerville</td>
+                <td>$46,798</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Itinerary Target 1 — strong baseline price.</td>
+            </tr>
+            <tr>
+                <td class="stop-num">2</td>
+                <td>2026-04-29</td>
+                <td>2025</td>
+                <td>Cadillac</td>
+                <td>Lyriq</td>
+                <td>Sport 2</td>
+                <td></td>
+                <td>Used</td>
+                <td></td>
+                <td>Voss Village Cadillac</td>
+                <td></td>
+                <td>Dayton</td>
+                <td>$48,997</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Stop 2 — verify 83.9" combined space and 19-speaker AKG. Same content as Lux 2; Sport 2 differs only by Obsidian Chrome trim and wheel design.</td>
+            </tr>
+            <tr>
+                <td class="stop-num">3</td>
+                <td>2026-04-29</td>
+                <td>2025</td>
+                <td>Chevy</td>
+                <td>Blazer EV</td>
+                <td>LT AWD</td>
+                <td></td>
+                <td>New</td>
+                <td>0</td>
+                <td>Voss Chevrolet</td>
+                <td></td>
+                <td>Centerville</td>
+                <td>$45,545</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Stop 3 — right knee/center-console clearance check. Lease quote pending — ask about GM Financial EV incentives.</td>
+            </tr>
+            <tr>
+                <td class="stop-num">4</td>
+                <td>2026-04-29</td>
+                <td>2023</td>
+                <td>Hyundai</td>
+                <td>IONIQ 6</td>
+                <td>Limited LR RWD</td>
+                <td>Curated Silver</td>
+                <td>Used</td>
+                <td></td>
+                <td>Jeff Wyler Hyundai of Beavercreek</td>
+                <td>046981</td>
+                <td>Beavercreek</td>
+                <td>$30,596</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Stop 4 on Apr 30. Original sticker $54,095 (base $52,600 + $380 acc + $1,115 freight). VIN KMHM54AA2PA046981 — originally shipped to Delray Hyundai FL. Heated+ventilated seats, Bose, V2L, sunroof, surround view, battery pre-heat all confirmed on sticker. 305-mi EPA range, 20" wheels. ~43% off original sticker.</td>
+            </tr>
+            <tr>
+                <td class="stop-num">—</td>
+                <td>2026-04-29</td>
+                <td>2025</td>
+                <td>Hyundai</td>
+                <td>IONIQ 5</td>
+                <td>Limited</td>
+                <td></td>
+                <td>New</td>
+                <td>0</td>
+                <td><em>(example)</em></td>
+                <td></td>
+                <td>—</td>
+                <td></td>
+                <td>$399</td>
+                <td>$2,500</td>
+                <td>36 mo / 12k mi / MF .00125</td>
+                <td></td>
+                <td>Example lease format — replace with real quote.</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </section>
+
+    <section id="panel-itinerary" class="tab-panel" role="tabpanel">
+    <p class="itinerary-intro"><strong>Plan for Thu, Apr 30, 2026:</strong> Stops 1–4 (Centerville/Beavercreek loop). Stop 4 is optional. Remaining rows are backups. <em>All times are rough windows — dealers know the day is fluid; confirm via text ahead of each stop.</em></p>
+    <div class="table-controls">
+        <a class="map-route-btn" target="_blank" rel="noopener"
+           href="https://www.google.com/maps/dir/1777+Lyons+Rd,+Centerville,+OH+45459/650+Miamisburg+Centerville+Rd,+Dayton,+OH+45459/100+Loop+Rd,+Centerville,+OH+45459/2170+Heller+Dr,+Beavercreek,+OH+45434">Map stops 1–4 →</a>
+        <button type="button" class="clear-filters">Clear filters</button>
+    </div>
+    <div class="table-wrap">
+    <table class="sortable">
+        <thead>
+            <tr>
+                <th title="Stop number on the Apr 30 plan">Stop</th>
+                <th title="Rough window mentioned to dealer — not a firm appointment; confirm via text">Time</th>
+                <th>Dealership</th>
+                <th>Address</th>
+                <th>Target Vehicle</th>
+                <th data-best="low">Price</th>
+                <th>Mission / Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="stop-num">1</td>
+                <td>~10–11 am</td>
+                <td><strong>Lexus of Dayton Pre-Owned</strong></td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query=Lexus+of+Dayton+Pre-Owned+1777+Lyons+Rd+Centerville+OH+45459" target="_blank" rel="noopener">1777 Lyons Rd, Centerville, OH 45459</a></td>
+                <td>2023 Lucid Air Grand Touring</td>
+                <td>~$46,798</td>
+                <td><strong>Battery/Floor:</strong> Check if GT rear floor is too high for knees. Glass canopy headroom.</td>
+            </tr>
+            <tr>
+                <td class="stop-num">2</td>
+                <td>~11 am–12 pm</td>
+                <td><strong>Voss Village Cadillac</strong></td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query=Voss+Village+Cadillac+650+Miamisburg+Centerville+Rd+Dayton+OH+45459" target="_blank" rel="noopener">650 Miamisburg Centerville Rd, Dayton, OH 45459</a></td>
+                <td>Used 2025 Lyriq Sport 2</td>
+                <td>~$48,997</td>
+                <td><strong>The Space Peak:</strong> Test max combined length (83.9") and 19-speaker AKG.</td>
+            </tr>
+            <tr>
+                <td class="stop-num">3</td>
+                <td><em>TBD — they'll text in AM</em></td>
+                <td><strong>Voss Chevrolet</strong></td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query=Voss+Chevrolet+100+Loop+Rd+Centerville+OH+45459" target="_blank" rel="noopener">100 Loop Rd, Centerville, OH 45459</a></td>
+                <td>New 2025 Blazer EV LT AWD</td>
+                <td>~$45,545</td>
+                <td><strong>Knee/Console:</strong> Does right leg clear the center console?</td>
+            </tr>
+            <tr>
+                <td class="stop-num">4</td>
+                <td>~12–2 pm</td>
+                <td><strong>Jeff Wyler Hyundai of Beavercreek</strong></td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query=Jeff+Wyler+Hyundai+Beavercreek+2170+Heller+Dr+Beavercreek+OH+45434" target="_blank" rel="noopener">2170 Heller Dr, Beavercreek, OH 45434</a></td>
+                <td>Used 2023 IONIQ 6 Limited</td>
+                <td>~$30,596</td>
+                <td><strong>The Ceiling (Optional):</strong> 6'4" son vs. 35.9" rear headroom.</td>
+            </tr>
+            <tr class="backup">
+                <td class="stop-num">—</td>
+                <td></td>
+                <td><strong>Quantrell Subaru</strong></td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query=Quantrell+Subaru+1450+E+New+Circle+Rd+Lexington+KY+40509" target="_blank" rel="noopener">1450 E New Circle Rd, Lexington, KY 40509</a></td>
+                <td>2023 Lucid Air Pure</td>
+                <td>~$40,988</td>
+                <td>Backup for testing Pure/Touring "foot garages"</td>
+            </tr>
+            <tr class="backup">
+                <td class="stop-num">—</td>
+                <td></td>
+                <td><strong>Jake Sweeney Kia</strong></td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query=Jake+Sweeney+Kia+5969+Centennial+Cir+Florence+KY+41042" target="_blank" rel="noopener">5969 Centennial Cir, Florence, KY 41042</a></td>
+                <td>Used 2025 Kia EV6 GT-Line AWD</td>
+                <td>~$45,999</td>
+                <td>Backup for testing GT-Line features</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.target;
+                document.querySelectorAll('.tab-button').forEach(b => {
+                    const active = b === btn;
+                    b.classList.toggle('active', active);
+                    b.setAttribute('aria-selected', active);
+                });
+                document.querySelectorAll('.tab-panel').forEach(p => {
+                    p.classList.toggle('active', p.id === target);
+                });
+            });
+        });
+
+        const parseNumeric = text => {
+            if (text == null) return NaN;
+            const cleaned = text.replace(/[$,"\s]/g, '').replace(/[^\d.\-eE]/g, '');
+            if (cleaned === '' || cleaned === '-' || cleaned === '.') return NaN;
+            const n = parseFloat(cleaned);
+            return Number.isFinite(n) ? n : NaN;
+        };
+
+        const cellText = td => (td.textContent || '').trim();
+
+        const isColumnNumeric = (rows, colIndex) => {
+            let numericCount = 0;
+            let nonEmpty = 0;
+            for (const r of rows) {
+                const t = cellText(r.cells[colIndex]);
+                if (!t || /^(n\/a|ref|base)$/i.test(t)) continue;
+                nonEmpty++;
+                if (!Number.isNaN(parseNumeric(t))) numericCount++;
+            }
+            return nonEmpty > 0 && numericCount / nonEmpty >= 0.6;
+        };
+
+        (() => {
+            const optionsTable = document.querySelector('#panel-options table.sortable');
+            if (!optionsTable) return;
+            const tbody = optionsTable.tBodies[0];
+            const STORAGE_KEY = 'evGuideOptionsNotes';
+            let stored = {};
+            try { stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { stored = {}; }
+
+            const defaults = {
+                '2023|Cadillac|Lyriq|Luxury (only)': 'RWD only. 7 recalls; Consumer Reports rates below-average reliability. Owner reports of dash/roof rattles, loose panels, awkward electronic door handles. Skip unless priced under ~$40k.',
+                '2024|Cadillac|Lyriq|Luxury 2': 'First year of AWD (515 hp) and conventional pop-out door handles. AKG-19 + ventilated/massage seats + Super Cruise standard at this trim. Sweet spot if you find one at target.',
+                '2025|Cadillac|Lyriq|Luxury 2': 'Apr 30 Stop 2 target (as Sport 2 at Voss — same content as Lux 2, only chrome differs). Manufacturing simplification cut ~24% of parts; range up to 326 mi. Best build of the Lux/Sport 1-2-3 era.',
+                '2026|Cadillac|Lyriq|Premium Luxury': 'AKG upgraded to 23 speakers. Super Cruise now standard on EVERY trim. Hitch Guidance/View standard. Cabin/dimensions unchanged. Lyriq-V (615 hp) added at top of lineup.',
+                '2023|Lucid|Air|Pure / Touring': 'Foot garages help tall-passenger rear posture (vs. GT raised floor). 900V/250 kW = ~18 min DC fast charge. Pure/Touring used under ~$42k is a stealth deal vs. $77k MSRP. Brand long-term support is the wildcard.',
+                '2023|Lucid|Air|Grand Tour': 'Raised rear floor — knees-to-chest risk for 6’4" son. 516-mi range is class-leading. Verify rear floor height first thing on Stop 1 at Lexus of Dayton.',
+                '2024|Honda|Accord|(Reference)': 'Reference benchmark — modern sedan equivalent of your Altima. Anchors "what’s normal" for combined sedan legroom.',
+                '2025|Chevy|Blazer EV|RS AWD': 'Right-knee/center-console clearance is the known issue — verify on Stop 3 at Voss Chevrolet. 400V/150 kW = slow road-trip charging. Lease incentives strong; used market thin.',
+                '2024|Honda|CR-V|(Reference)': 'Reference benchmark — most-popular compact SUV. Anchors "what’s normal" for SUV cabin space.',
+                '2023|Hyundai|IONIQ 6|Limited': 'Aero roofline = REAR HEADROOM RISK (35.9" — class minimum). Test 6’4" son in rear before you fall in love with the price. 800V/233 kW charging is excellent. Limited trim required for Bose + ventilated seats.',
+                '2025|Kia|EV6|GT-Line': 'GT-Line is the trim floor for Meridian audio + ventilated seats. 800V architecture, sportier feel than the IONIQs. Backup at Jake Sweeney Kia, Florence KY.',
+                '2014|Nissan|Altima|SL (Baseline)': 'YOUR CURRENT CAR — the dimensional baseline. Anything <81" combined space will feel cramped to your family.',
+                '2025|Hyundai|IONIQ 5|Limited': 'Only car on the list with NATIVE Tesla NACS port (no adapter). 2025+ also adds rear wiper + physical seat buttons. Strategy: lease new 2026 to capture $7,500+ EV cash; or buy 2025 used under ~$35k.',
+                '2024|Hyundai|IONIQ 5|Limited': 'Same cabin as 2025 but CCS port (Tesla adapter required). $52,650 MSRP — cheap used. Goldilocks pick if NACS isn’t a dealbreaker.',
+                '2024|Genesis|GV60|Advanced': 'B&O 17-speaker is genuinely premium; 800V architecture. But 79.9" combined space is the smallest on the list — marginal for 6’4" rear passenger. Niche pick.',
+                '2025|Chevy|Equinox EV|3RS': 'Cheapest EV on the list. 79.7" combined space — same caveat as GV60 for tall son. 400V/150 kW slow charging. Strong range (319 mi) for the price.'
+            };
+
+            const rowKey = row => ['0','1','2','3']
+                .map(i => (row.cells[i] && row.cells[i].textContent || '').trim())
+                .join('|');
+            const saveNotes = () => {
+                Array.from(tbody.rows).forEach(r => {
+                    const inner = r.querySelector('td.notes .notes-inner');
+                    if (inner && inner.dataset.touched === 'true') {
+                        stored[r.dataset.notesKey] = inner.textContent.trim();
+                    }
+                });
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(stored)); } catch (e) {}
+            };
+            const syncTitle = (td, inner) => { td.title = inner.textContent.trim(); };
+            Array.from(tbody.rows).forEach(row => {
+                const key = rowKey(row);
+                row.dataset.notesKey = key;
+                const td = document.createElement('td');
+                td.className = 'notes';
+                const inner = document.createElement('div');
+                inner.className = 'notes-inner';
+                inner.contentEditable = 'true';
+                inner.spellcheck = true;
+                const text = (key in stored) ? stored[key] : (defaults[key] || '');
+                if (text) inner.textContent = text;
+                td.appendChild(inner);
+                syncTitle(td, inner);
+                inner.addEventListener('input', () => {
+                    inner.dataset.touched = 'true';
+                    syncTitle(td, inner);
+                });
+                inner.addEventListener('blur', () => { syncTitle(td, inner); saveNotes(); });
+                row.appendChild(td);
+            });
+        })();
+
+        document.querySelectorAll('table.sortable').forEach(table => {
+            const headerRow = table.tHead.rows[0];
+            const headers = Array.from(headerRow.cells);
+            const tbody = table.tBodies[0];
+            const dataRows = () => Array.from(tbody.rows).filter(r => !r.classList.contains('no-results-row'));
+
+            const numericCols = headers.map((_, i) => isColumnNumeric(dataRows(), i));
+
+            const filterRow = document.createElement('tr');
+            filterRow.className = 'filter-row';
+            headers.forEach((_, i) => {
+                const th = document.createElement('th');
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = 'Filter...';
+                input.dataset.col = i;
+                th.appendChild(input);
+                filterRow.appendChild(th);
+            });
+            table.tHead.appendChild(filterRow);
+
+            const noResultsRow = document.createElement('tr');
+            noResultsRow.className = 'no-results-row';
+            const noResultsCell = document.createElement('td');
+            noResultsCell.colSpan = headers.length;
+            noResultsCell.textContent = 'No matching rows';
+            noResultsRow.appendChild(noResultsCell);
+            noResultsRow.style.display = 'none';
+            tbody.appendChild(noResultsRow);
+
+            const sectionEl = table.closest('section');
+            const toggleBtn = sectionEl ? sectionEl.querySelector('.toggle-reference') : null;
+
+            const applyFilters = () => {
+                const filters = Array.from(filterRow.querySelectorAll('input')).map(i => i.value.trim().toLowerCase());
+                const hideReference = toggleBtn && toggleBtn.dataset.hidden === 'true';
+                let visibleCount = 0;
+                dataRows().forEach(row => {
+                    const isReference = row.classList.contains('reference');
+                    const filterMatch = filters.every((f, i) => !f || cellText(row.cells[i]).toLowerCase().includes(f));
+                    const visible = filterMatch && !(hideReference && isReference);
+                    row.style.display = visible ? '' : 'none';
+                    if (visible) visibleCount++;
+                });
+                noResultsRow.style.display = visibleCount === 0 ? '' : 'none';
+            };
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const nowHidden = toggleBtn.dataset.hidden !== 'true';
+                    toggleBtn.dataset.hidden = nowHidden ? 'true' : 'false';
+                    toggleBtn.textContent = nowHidden ? 'Show gas cars' : 'Hide gas cars';
+                    applyFilters();
+                });
+            }
+
+            filterRow.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', applyFilters);
+                input.addEventListener('click', e => e.stopPropagation());
+            });
+
+            let sortState = { col: -1, dir: 1 };
+
+            headers.forEach((th, i) => {
+                const arrow = document.createElement('span');
+                arrow.className = 'sort-arrow';
+                arrow.textContent = '▴▾';
+                th.appendChild(arrow);
+
+                const numeric = numericCols[i];
+                const bestLow = th.dataset.best === 'low';
+                const initialDir = numeric ? (bestLow ? 1 : -1) : 1;
+
+                th.addEventListener('click', () => {
+                    const dir = (sortState.col === i) ? -sortState.dir : initialDir;
+                    sortState = { col: i, dir };
+
+                    headers.forEach(h => {
+                        h.classList.remove('sort-asc', 'sort-desc');
+                        const a = h.querySelector('.sort-arrow');
+                        if (a) a.textContent = '▴▾';
+                    });
+                    th.classList.add(dir === 1 ? 'sort-asc' : 'sort-desc');
+                    arrow.textContent = dir === 1 ? '▴' : '▾';
+
+                    const rows = dataRows();
+                    rows.sort((a, b) => {
+                        const av = cellText(a.cells[i]);
+                        const bv = cellText(b.cells[i]);
+                        if (numeric) {
+                            const an = parseNumeric(av);
+                            const bn = parseNumeric(bv);
+                            const aNaN = Number.isNaN(an), bNaN = Number.isNaN(bn);
+                            if (aNaN && bNaN) return 0;
+                            if (aNaN) return 1;
+                            if (bNaN) return -1;
+                            return (an - bn) * dir;
+                        }
+                        return av.localeCompare(bv, undefined, { sensitivity: 'base' }) * dir;
+                    });
+                    rows.forEach(r => tbody.appendChild(r));
+                    tbody.appendChild(noResultsRow);
+                });
+            });
+
+            const clearBtn = table.closest('section').querySelector('.clear-filters');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    filterRow.querySelectorAll('input').forEach(input => input.value = '');
+                    applyFilters();
+                });
+            }
+        });
+
+        (() => {
+            const tabFor = sectionId => document.querySelector(`.tab-button[data-target="${sectionId}"]`);
+            const switchToTab = sectionId => {
+                const btn = tabFor(sectionId);
+                if (btn && !btn.classList.contains('active')) btn.click();
+            };
+            const flashRow = row => {
+                row.classList.remove('row-highlight');
+                void row.offsetWidth;
+                row.classList.add('row-highlight');
+                setTimeout(() => row.classList.remove('row-highlight'), 2000);
+            };
+            document.querySelectorAll('td.stop-num').forEach(cell => {
+                const text = cell.textContent.trim();
+                if (!/^\d+$/.test(text)) return;
+                const fromSection = cell.closest('section');
+                if (!fromSection) return;
+                const targetId = fromSection.id === 'panel-itinerary' ? 'panel-deals' : 'panel-itinerary';
+                const targetSection = document.getElementById(targetId);
+                if (!targetSection) return;
+                const targetCell = Array.from(targetSection.querySelectorAll('td.stop-num'))
+                    .find(c => c.textContent.trim() === text);
+                if (!targetCell) return;
+                cell.classList.add('linked');
+                cell.title = `Click to view Stop ${text} in the ${targetId === 'panel-deals' ? 'Deals' : 'Itinerary'} tab`;
+                cell.addEventListener('click', () => {
+                    switchToTab(targetId);
+                    requestAnimationFrame(() => {
+                        const targetRow = targetCell.closest('tr');
+                        targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        flashRow(targetRow);
+                    });
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
